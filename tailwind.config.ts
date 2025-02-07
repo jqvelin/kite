@@ -11,13 +11,20 @@ export default {
                 accent: "var(--color-accent)",
                 border: "var(--color-border)"
             },
+            margin: {
+                sm: "var(--margin-sm)",
+                md: "var(--margin-md)",
+                lg: "var(--margin-lg)"
+            },
             padding: {
                 sm: "var(--padding-sm)",
-                md: "var(--padding-md)"
+                md: "var(--padding-md)",
+                lg: "var(--padding-lg)"
             },
             gap: {
                 sm: "var(--gap-sm)",
-                md: "var(--gap-md)"
+                md: "var(--gap-md)",
+                lg: "var(--gap-lg)"
             }
         }
     }
