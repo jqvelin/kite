@@ -7,14 +7,20 @@
     --color-background: #ffffff;
     --color-primary: #4b5563;
     --color-accent: #0284c7;
+    --color-destructive: #ff4444;
     --color-border: #d1d5db;
 
-    --padding-sm: 0.25rem;
-    --padding-md: 0.5rem;
-    --padding-lg: 1rem;
+    --padding-sm: 0.5rem;
+    --padding-md: 1rem;
+    --padding-lg: 2rem;
 
-    --gap-sm: 0.25rem;
-    --gap-md: 0.5rem;
+    --gap-sm: 0.5rem;
+    --gap-md: 1rem;
+    --gap-lg: 2rem;
+
+    --margin-sm: 0.5rem;
+    --margin-md: 1rem;
+    --margin-lg: 2rem;
 }
 
 @layer base {
@@ -25,6 +31,6 @@
         /* so the content doesn't hide behind the address bar*/
         min-height: 100dvh;
 
-        @apply bg-body flex w-screen items-center justify-center text-primary antialiased;
+        @apply flex w-screen items-center justify-center bg-body p-lg text-primary antialiased;
     }
 }
