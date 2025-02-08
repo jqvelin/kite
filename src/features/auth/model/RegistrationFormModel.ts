@@ -2,8 +2,8 @@ import { z } from "zod";
 
 export const RegistrationFormSchema = z
     .object({
-        nickname: z.string().min(1, "Имя пользователя обязательно!"),
-        fullName: z.string().min(1, "Полное имя обязательно!"),
+        nickname: z.string().trim().min(1, "Имя пользователя обязательно!"),
+        fullName: z.string().trim().min(1, "Полное имя обязательно!"),
         password: z.string().min(8, "Не менее 8 символов!"),
         confirmPassword: z.string().min(8, "Не менее 8 символов!")
     })

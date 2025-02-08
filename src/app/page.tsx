@@ -1,1 +1,1 @@
-export { AuthPage as default } from "@/pages/auth";
+export { Homepage as default } from "@/pages/home";

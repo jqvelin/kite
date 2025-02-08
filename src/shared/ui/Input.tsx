@@ -28,6 +28,7 @@ const PasswordInput = (props: InputProps) => {
             />
             <button
                 type="button"
+                tabIndex={-1}
                 onClick={() => {
                     setIsPasswordVisible(!isPasswordVisible);
                 }}

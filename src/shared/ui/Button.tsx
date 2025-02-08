@@ -1,11 +1,15 @@
 import { ComponentPropsWithRef } from "react";
 
-type ButtonVariants = "primary" | "link";
+type ButtonVariants = "primary" | "link" | "destructive";
 
 const getButtonVariantClasses = (variant: ButtonVariants | undefined) => {
     switch (variant) {
         case "link": {
             return "text-accent";
+        }
+
+        case "destructive": {
+            return "bg-destructive text-background rounded-md py-sm px-md";
         }
 
         default: {
@@ -22,7 +26,7 @@ export const Button = (props: ButtonProps) => (
     <button
         {...props}
         className={[
-            "font-semibold",
+            "font-semibold transition-colors",
             getButtonVariantClasses(props.variant),
             props.className
         ].join(" ")}

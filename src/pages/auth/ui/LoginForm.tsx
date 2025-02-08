@@ -1,10 +1,11 @@
 "use client";
 
+import { LoginFormSchema, type LoginFormType } from "@/features/auth";
 import { Button, Input } from "@/shared/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 
-import { LoginFormSchema, type LoginFormType } from "../model/LoginFormModel";
 import { ErrorAlert } from "./ErrorAlert";
 
 export const LoginForm = () => {
@@ -15,7 +16,7 @@ export const LoginForm = () => {
 
     const errors = formState.errors;
 
-    const onSubmit = handleSubmit((data) => console.log(data));
+    const onSubmit = handleSubmit((data) => signIn("credentials", data));
 
     return (
         <form
@@ -27,6 +28,7 @@ export const LoginForm = () => {
                 <span>Имя пользователя</span>
                 <Input
                     type="text"
+                    aria-invalid={errors.nickname ? "true" : "false"}
                     {...register("nickname")}
                 />
                 <ErrorAlert>{errors.nickname?.message}</ErrorAlert>
@@ -35,6 +37,7 @@ export const LoginForm = () => {
                 <span>Пароль</span>
                 <Input
                     type="password"
+                    aria-invalid={errors.password ? "true" : "false"}
                     {...register("password")}
                 />
                 <ErrorAlert>{errors.password?.message}</ErrorAlert>

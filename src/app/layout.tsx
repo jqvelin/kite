@@ -1,5 +1,7 @@
+import { auth } from "@/features/auth";
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
+import { ReactNode } from "react";
 
 import "./globals.css";
 
@@ -14,14 +16,21 @@ const manrope = Manrope({
     subsets: ["cyrillic", "latin"]
 });
 
-export default function RootLayout({
-    children
+export default async function RootLayout({
+    children,
+    authPage
 }: {
-    children: React.ReactNode;
+    children: ReactNode;
+    authPage: ReactNode;
 }) {
+    const session = await auth();
+    const user = session?.user;
+
     return (
         <html lang="ru">
-            <body className={manrope.className}>{children}</body>
+            <body className={manrope.className}>
+                {user ? children : authPage}
+            </body>
         </html>
     );
 }

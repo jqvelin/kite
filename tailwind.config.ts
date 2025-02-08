@@ -9,7 +9,7 @@ export default {
                 background: "var(--color-background)",
                 primary: "var(--color-primary)",
                 accent: "var(--color-accent)",
-                error: "var(--color-error)",
+                destructive: "var(--color-destructive)",
                 border: "var(--color-border)"
             },
             margin: {
