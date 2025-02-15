@@ -1,9 +1,9 @@
 export {
-    RegistrationFormSchema,
-    type RegistrationFormType
-} from "./model/RegistrationFormModel";
-export { LoginFormSchema, type LoginFormType } from "./model/LoginFormModel";
-export { type AuthOption } from "./model/AuthOption.types";
+    UserRegistrationSchema,
+    type UserRegistrationType
+} from "./model/UserRegistrationModel";
+export { UserSignInSchema, type UserSignInType } from "./model/UserSignInModel";
 export * from "./auth";
 export { createUser } from "./api/createUser";
-export { REGISTRATION_ERRORS } from "./utils/constants";
+export { authenticateUser } from "./api/authenticateUser";
+export { AUTH_ERRORS } from "./utils/constants";

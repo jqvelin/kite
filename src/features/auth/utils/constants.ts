@@ -1,21 +1,13 @@
-export const REGISTRATION_ERRORS = {
-    nickname: {
-        empty: "Nickname is empty",
-        tooLong: "Nickname should not be longer than 20 characters",
-        taken: "User already exists"
+export const AUTH_ERRORS = {
+    name: {
+        empty: "Имя пользователя обязательно",
+        tooLong: "Не более 20 символов",
+        taken: "Имя пользователя занято"
     },
-    fullName: {
-        empty: "Full name is empty"
-    },
-    password: {
-        empty: "Password is required",
-        tooShort: "Password should be 8 characters or more"
-    },
-    // При входе введено неизвестное имя пользователя
-    // или неправильный пароль
-    credentials: {
-        invalid: "Invalid credentials"
+
+    email: {
+        empty: "Электронная почта обязательна",
+        taken: "Эта электронная почта уже используется",
+        notFound: "Такого пользователя не существует"
     }
 } as const;
-
-export const BCRYPT_SALT_ROUNDS = 10;
