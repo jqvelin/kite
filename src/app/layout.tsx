@@ -24,12 +24,11 @@ export default async function RootLayout({
     authPage: ReactNode;
 }) {
     const session = await auth();
-    const user = session?.user;
 
     return (
         <html lang="ru">
             <body className={manrope.className}>
-                {user ? children : authPage}
+                {session ? children : authPage}
             </body>
         </html>
     );

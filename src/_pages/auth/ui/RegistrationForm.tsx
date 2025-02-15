@@ -2,8 +2,8 @@
 
 import {
     REGISTRATION_ERRORS,
-    RegistrationFormSchema,
-    RegistrationFormType,
+    UserRegistrationSchema,
+    type UserRegistrationType,
     createUser
 } from "@/features/auth";
 import { Button, Input } from "@/shared/ui";
@@ -18,9 +18,9 @@ import { ErrorAlert } from "./ErrorAlert";
 // отключаем серверный рендеринг, чтобы не возникало ошибок гидрации
 export const RegistrationForm = noSSR(() => {
     const { register, formState, handleSubmit, setError } =
-        useForm<RegistrationFormType>({
+        useForm<UserRegistrationType>({
             mode: "onBlur",
-            resolver: zodResolver(RegistrationFormSchema)
+            resolver: zodResolver(UserRegistrationSchema)
         });
 
     const errors = formState.errors;
@@ -31,13 +31,15 @@ export const RegistrationForm = noSSR(() => {
         } catch (e) {
             if (!(e instanceof Error)) return;
 
-            if (e.message === REGISTRATION_ERRORS.nickname.taken) {
-                setError("nickname", {
+            if (e.message === REGISTRATION_ERRORS.name.taken) {
+                setError("name", {
                     message: "Имя пользователя занято"
                 });
             }
         }
     });
+
+    const randomUsername = getRandomUsername();
 
     return (
         <form
@@ -49,38 +51,21 @@ export const RegistrationForm = noSSR(() => {
                 <span>Имя пользователя</span>
                 <Input
                     type="text"
-                    {...register("nickname")}
-                    aria-invalid={errors.nickname ? "true" : "false"}
-                    placeholder={`Как насчёт ${getRandomUsername()}?`}
+                    {...register("name")}
+                    aria-invalid={errors.name ? "true" : "false"}
+                    placeholder={`Как насчёт ${randomUsername}?`}
                 />
-                <ErrorAlert>{errors.nickname?.message}</ErrorAlert>
+                <ErrorAlert>{errors.name?.message}</ErrorAlert>
             </label>
             <label className="flex flex-col">
-                <span>Полное имя</span>
+                <span>Электронная почта</span>
                 <Input
                     type="text"
-                    aria-invalid={errors.fullName ? "true" : "false"}
-                    {...register("fullName")}
+                    aria-invalid={errors.email ? "true" : "false"}
+                    {...register("email")}
+                    placeholder={`${randomUsername}@mail.com`}
                 />
-                <ErrorAlert>{errors.fullName?.message}</ErrorAlert>
-            </label>
-            <label className="flex flex-col">
-                <span>Пароль</span>
-                <Input
-                    type="password"
-                    aria-invalid={errors.password ? "true" : "false"}
-                    {...register("password")}
-                />
-                <ErrorAlert>{errors.password?.message}</ErrorAlert>
-            </label>
-            <label className="flex flex-col">
-                <span>Подтверждение пароля</span>
-                <Input
-                    type="password"
-                    aria-invalid={errors.confirmPassword ? "true" : "false"}
-                    {...register("confirmPassword")}
-                />
-                <ErrorAlert>{errors.confirmPassword?.message}</ErrorAlert>
+                <ErrorAlert>{errors.email?.message}</ErrorAlert>
             </label>
             <Button className="mb-sm">Зарегистрироваться</Button>
         </form>

@@ -11,7 +11,7 @@ export const AuthPage = () => {
     const [authOption, setAuthOption] = useState<AuthOption>("login");
 
     return (
-        <div className="flex items-center justify-center gap-md">
+        <main className="flex items-center justify-center gap-md">
             <KiteAnimation />
             <div className="p-md rounded-lg shadow-md bg-background">
                 <div className="mb-4">
@@ -46,6 +46,6 @@ export const AuthPage = () => {
                     </Button>
                 </div>
             </div>
-        </div>
+        </main>
     );
 };

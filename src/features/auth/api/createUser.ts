@@ -1,41 +1,34 @@
 "use server";
 
 import { db } from "@/shared/api";
-import bcrypt from "bcryptjs";
 
 import { signIn } from "../auth";
-import { type RegistrationFormType } from "../model/RegistrationFormModel";
-import { BCRYPT_SALT_ROUNDS, REGISTRATION_ERRORS } from "../utils/constants";
+import { type UserRegistrationType } from "../model/UserRegistrationModel";
+import { REGISTRATION_ERRORS } from "../utils/constants";
 
-export const createUser = async (userData: RegistrationFormType) => {
-    const { nickname, fullName, password } = userData;
+export const createUser = async (userData: UserRegistrationType) => {
+    const { email, name } = userData;
 
-    if (!nickname) throw new Error(REGISTRATION_ERRORS.nickname.empty);
-    if (!fullName) throw new Error(REGISTRATION_ERRORS.fullName.empty);
-    if (!password) throw new Error(REGISTRATION_ERRORS.password.empty);
+    if (!email) throw new Error(REGISTRATION_ERRORS.email.empty);
+    if (!name) throw new Error(REGISTRATION_ERRORS.name.empty);
 
-    if (nickname.length > 20) {
-        throw new Error(REGISTRATION_ERRORS.nickname.tooLong);
-    } else if (password.length < 8) {
-        throw new Error(REGISTRATION_ERRORS.password.tooShort);
+    if (name.length > 20) {
+        throw new Error(REGISTRATION_ERRORS.name.tooLong);
     }
 
-    const isNicknameTaken = await db.user.findFirst({ where: { nickname } });
+    const isNicknameTaken = await db.user.findFirst({ where: { name } });
     if (isNicknameTaken) {
-        throw new Error(REGISTRATION_ERRORS.nickname.taken);
+        throw new Error(REGISTRATION_ERRORS.name.taken);
     }
-
-    const passwordHash = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
     const user = await db.user.create({
         data: {
-            nickname,
-            fullName,
-            password: passwordHash
+            name,
+            email
         }
     });
 
-    await signIn("credentials", { nickname, password });
+    await signIn("resend", { name, email });
 
     return user;
 };
