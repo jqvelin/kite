@@ -1,14 +1,13 @@
 "use client";
 
-import { AuthOption } from "@/features/auth";
-import { Button, KiteAnimation } from "@/shared/ui";
+import { KiteAnimation } from "@/shared/ui";
 import { useState } from "react";
 
-import { LoginForm } from "./LoginForm";
-import { RegistrationForm } from "./RegistrationForm";
+import { AuthForm } from "./AuthForm";
+import { MagicLinkSentMessage } from "./MagicLinkSentMessage";
 
 export const AuthPage = () => {
-    const [authOption, setAuthOption] = useState<AuthOption>("login");
+    const [isMagicLinkSent, setIsMagicLinkSent] = useState(false);
 
     return (
         <main className="flex items-center justify-center gap-md">
@@ -22,29 +21,11 @@ export const AuthPage = () => {
                         Безопасное общение ждёт, осталась лишь пара шагов...
                     </h2>
                 </div>
-                {authOption === "login" ? <LoginForm /> : <RegistrationForm />}
-                <div className="text-center">
-                    <span className="text-center">
-                        {authOption === "login"
-                            ? "Нет аккаунта?"
-                            : "Уже зарегистрированы?"}
-                        &nbsp;
-                    </span>
-                    <Button
-                        onClick={() =>
-                            setAuthOption(
-                                authOption === "login"
-                                    ? "registration"
-                                    : "login"
-                            )
-                        }
-                        variant="link"
-                    >
-                        {authOption === "login"
-                            ? "Зарегистрироваться"
-                            : "Войти"}
-                    </Button>
-                </div>
+                {isMagicLinkSent ? (
+                    <MagicLinkSentMessage />
+                ) : (
+                    <AuthForm setIsMagicLinkSent={setIsMagicLinkSent} />
+                )}
             </div>
         </main>
     );

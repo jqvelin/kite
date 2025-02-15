@@ -1,12 +1,13 @@
-export const REGISTRATION_ERRORS = {
+export const AUTH_ERRORS = {
     name: {
-        empty: "Name is empty",
-        tooLong: "Name should not be longer than 20 characters",
-        taken: "User already exists"
+        empty: "Имя пользователя обязательно",
+        tooLong: "Не более 20 символов",
+        taken: "Имя пользователя занято"
     },
 
     email: {
-        empty: "Email is empty",
-        taken: "User already exists"
+        empty: "Электронная почта обязательна",
+        taken: "Эта электронная почта уже используется",
+        notFound: "Такого пользователя не существует"
     }
 } as const;

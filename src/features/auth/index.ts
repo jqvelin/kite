@@ -2,8 +2,8 @@ export {
     UserRegistrationSchema,
     type UserRegistrationType
 } from "./model/UserRegistrationModel";
-export { UserLoginSchema, type UserLoginType } from "./model/UserLoginModel";
-export { type AuthOption } from "./model/AuthOption.types";
+export { UserSignInSchema, type UserSignInType } from "./model/UserSignInModel";
 export * from "./auth";
 export { createUser } from "./api/createUser";
-export { REGISTRATION_ERRORS } from "./utils/constants";
+export { authenticateUser } from "./api/authenticateUser";
+export { AUTH_ERRORS } from "./utils/constants";

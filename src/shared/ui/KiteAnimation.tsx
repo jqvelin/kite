@@ -1,11 +1,13 @@
 import Image from "next/image";
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentPropsWithoutRef, memo } from "react";
 
 type KiteAnimationProps = ComponentPropsWithoutRef<"img"> & {
     width?: number;
 };
 
-export const KiteAnimation = (props: KiteAnimationProps) => (
+// Компонент передан отдельно в memo из-за ошибки
+// Component definition is missing display name | react/display-name
+const KiteAnimationUnoptimized = (props: KiteAnimationProps) => (
     <Image
         src="/kite.gif"
         {...props}
@@ -16,3 +18,5 @@ export const KiteAnimation = (props: KiteAnimationProps) => (
         unoptimized
     />
 );
+
+export const KiteAnimation = memo(KiteAnimationUnoptimized);

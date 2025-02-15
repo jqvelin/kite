@@ -1,7 +1,7 @@
 import { z } from "zod";
 
-export const UserLoginSchema = z.object({
+export const UserSignInSchema = z.object({
     email: z.string().email("Некорректная электронная почта!")
 });
 
-export type UserLoginType = z.infer<typeof UserLoginSchema>;
+export type UserSignInType = z.infer<typeof UserSignInSchema>;
