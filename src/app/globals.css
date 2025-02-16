@@ -25,10 +25,10 @@
 
 @layer base {
     body {
-        /* for any browsers not supporting dynamic viewport */
+        /* Для браузеров, не поддерживающих динамические вьюпорты */
         min-height: 100vh;
-        /* setting smallest possible viewport of Safari */
-        /* so the content doesn't hide behind the address bar*/
+        /* Устанавливаем минимальную высоту в динамический вьюпорт, */
+        /* чтобы контент не скрывался за адресной строкой в Safari */
         min-height: 100dvh;
 
         @apply flex w-screen items-center justify-center bg-body p-lg text-primary antialiased;
