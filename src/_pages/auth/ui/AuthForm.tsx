@@ -68,7 +68,17 @@ export const SignInForm = ({ setIsMagicLinkSent }: AuthFormProps) => {
                 setError(error.formField, { message: error.message });
             });
         } else {
-            setIsMagicLinkSent(true);
+            // Cross-fade анимация перехода от формы
+            // к сообщению об отправленном верификационном письме
+
+            // Переход без анимации для браузеров,
+            // не поддерживающих View Transition API
+            if (!document.startViewTransition) {
+                setIsMagicLinkSent(true);
+                return;
+            }
+
+            document.startViewTransition(() => setIsMagicLinkSent(true));
         }
     });
 
@@ -112,7 +122,17 @@ export const RegistrationForm = noSSR<AuthFormProps>(
                     setError(error.formField, { message: error.message });
                 });
             } else {
-                setIsMagicLinkSent(true);
+                // Cross-fade анимация перехода от формы
+                // к сообщению об отправленном верификационном письме
+
+                // Переход без анимации для браузеров,
+                // не поддерживающих View Transition API
+                if (!document.startViewTransition) {
+                    setIsMagicLinkSent(true);
+                    return;
+                }
+
+                document.startViewTransition(() => setIsMagicLinkSent(true));
             }
         });
 

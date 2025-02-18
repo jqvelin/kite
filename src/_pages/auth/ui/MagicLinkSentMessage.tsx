@@ -4,7 +4,7 @@ export const MagicLinkSentMessage = () => (
     <div className="flex items-center gap-sm flex-wrap">
         <Image
             width={300}
-            height={150}
+            height={200}
             src="/girl-flying-a-kite.avif"
             alt="Girl flying a kite"
         />
