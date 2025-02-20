@@ -1,26 +1,36 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-:root {
-    --color-background-body: #e0f2fe;
-    --color-background: #ffffff;
-    --color-primary: #4b5563;
-    --color-accent: #0284c7;
-    --color-destructive: #ff4444;
-    --color-border: #d1d5db;
+@layer base {
+    *,
+    ::after,
+    ::before,
+    ::backdrop,
+    ::file-selector-button {
+        border-color: var(--color-gray-200, currentColor);
+    }
+}
 
-    --padding-sm: 0.5rem;
-    --padding-md: 1rem;
-    --padding-lg: 2rem;
+@layer utilities {
+    :root {
+        --color-background-body: #e0f2fe;
+        --color-background: #ffffff;
+        --color-primary: #4b5563;
+        --color-accent: #0284c7;
+        --color-destructive: #ff4444;
+        --color-border: #d1d5db;
 
-    --gap-sm: 0.5rem;
-    --gap-md: 1rem;
-    --gap-lg: 2rem;
+        --padding-sm: 0.5rem;
+        --padding-md: 1rem;
+        --padding-lg: 2rem;
 
-    --margin-sm: 0.5rem;
-    --margin-md: 1rem;
-    --margin-lg: 2rem;
+        --gap-sm: 0.5rem;
+        --gap-md: 1rem;
+        --gap-lg: 2rem;
+
+        --margin-sm: 0.5rem;
+        --margin-md: 1rem;
+        --margin-lg: 2rem;
+    }
 }
 
 @layer base {
@@ -31,6 +41,27 @@
         /* чтобы контент не скрывался за адресной строкой в Safari */
         min-height: 100dvh;
 
-        @apply flex w-screen items-center justify-center bg-body p-lg text-primary antialiased;
+        @apply bg-body p-lg text-primary flex w-screen items-center justify-center antialiased;
     }
+}
+
+@theme {
+    --color-body: var(--color-background-body);
+    --color-background: var(--color-background);
+    --color-primary: var(--color-primary);
+    --color-accent: var(--color-accent);
+    --color-destructive: var(--color-destructive);
+    --color-border: var(--color-border);
+
+    --margin-sm: var(--margin-sm);
+    --margin-md: var(--margin-md);
+    --margin-lg: var(--margin-lg);
+
+    --padding-sm: var(--padding-sm);
+    --padding-md: var(--padding-md);
+    --padding-lg: var(--padding-lg);
+
+    --gap-sm: var(--gap-sm);
+    --gap-md: var(--gap-md);
+    --gap-lg: var(--gap-lg);
 }

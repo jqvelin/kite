@@ -26,7 +26,7 @@ export const Button = (props: ButtonProps) => (
     <button
         {...props}
         className={[
-            "font-semibold transition-colors",
+            "font-semibold transition-colors cursor-pointer",
             getButtonVariantClasses(props.variant),
             props.className
         ].join(" ")}
