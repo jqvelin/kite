@@ -44,7 +44,7 @@ const BaseInput = (props: InputProps) => (
     <input
         {...props}
         className={[
-            "p-sm border-2 rounded-md w-full shadow-sm",
+            "p-sm border-2 rounded-md w-full shadow-xs",
             props.className
         ].join(" ")}
     />
