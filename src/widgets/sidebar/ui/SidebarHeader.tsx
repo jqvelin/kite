@@ -1,4 +1,4 @@
-import { KiteIcon } from "@/shared/ui";
+import { Button, KiteIcon } from "@/shared/ui";
 import { SlSettings } from "react-icons/sl";
 
 export const SidebarHeader = () => (
@@ -7,8 +7,11 @@ export const SidebarHeader = () => (
             <KiteIcon size="2rem" />
             <span className="text-accent font-bold text-xl">Kite</span>
         </div>
-        <button>
+        <Button
+            variant="ghost"
+            className="aspect-square rounded-full p-2"
+        >
             <SlSettings size="1.5rem" />
-        </button>
+        </Button>
     </div>
 );

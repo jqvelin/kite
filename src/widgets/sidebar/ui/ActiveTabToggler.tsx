@@ -18,14 +18,14 @@ export const ActiveTabToggler = ({
             <Button
                 onClick={() => setActiveTab("chats")}
                 variant="ghost"
-                className="text-primary flex-1"
+                className="text-primary flex-1 hover:bg-transparent"
             >
                 Чаты
             </Button>
             <Button
                 onClick={() => setActiveTab("users")}
                 variant="ghost"
-                className="text-primary flex-1"
+                className="text-primary flex-1 hover:bg-transparent"
             >
                 Люди
             </Button>

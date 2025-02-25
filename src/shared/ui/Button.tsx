@@ -9,7 +9,7 @@ const getButtonVariantClasses = (variant: ButtonVariants | undefined) => {
         }
 
         case "ghost": {
-            return "bg-transparent text-primary";
+            return "bg-transparent text-primary transition-colors hover:bg-accent/20";
         }
 
         case "destructive": {
