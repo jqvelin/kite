@@ -1,6 +1,7 @@
 "use client";
 
 import { ComponentPropsWithRef, useState } from "react";
+import { BiSearch } from "react-icons/bi";
 import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 type InputProps = ComponentPropsWithRef<"input">;
@@ -9,6 +10,21 @@ export const Input = (props: InputProps) => {
     switch (props.type) {
         case "password": {
             return <PasswordInput {...props} />;
+        }
+
+        case "search": {
+            return (
+                <div className="relative w-full">
+                    <BiSearch
+                        size="1.5rem"
+                        className="absolute left-2 top-1/2 -translate-y-1/2"
+                    />
+                    <BaseInput
+                        className="pl-8"
+                        {...props}
+                    />
+                </div>
+            );
         }
 
         default: {
@@ -44,7 +60,7 @@ const BaseInput = (props: InputProps) => (
     <input
         {...props}
         className={[
-            "p-sm border-2 rounded-md w-full shadow-xs",
+            "p-sm border-2 rounded-md w-full shadow-xs outline-accent",
             props.className
         ].join(" ")}
     />

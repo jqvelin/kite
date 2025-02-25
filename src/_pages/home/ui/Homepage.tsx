@@ -1,8 +1,9 @@
-"use client";
+import { ChatWindow } from "@/widgets/chat-window";
+import { Sidebar } from "@/widgets/sidebar";
 
-import { Button } from "@/shared/ui";
-import { signOut } from "next-auth/react";
-
-export const Homepage = () => {
-    return <Button onClick={() => signOut()}>sign out</Button>;
-};
+export const Homepage = () => (
+    <>
+        <Sidebar />
+        <ChatWindow />
+    </>
+);

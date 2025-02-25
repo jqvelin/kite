@@ -1,11 +1,15 @@
 import { ComponentPropsWithRef } from "react";
 
-type ButtonVariants = "primary" | "link" | "destructive";
+type ButtonVariants = "primary" | "link" | "ghost" | "destructive";
 
 const getButtonVariantClasses = (variant: ButtonVariants | undefined) => {
     switch (variant) {
         case "link": {
             return "text-accent";
+        }
+
+        case "ghost": {
+            return "bg-transparent text-primary transition-colors hover:bg-accent/20";
         }
 
         case "destructive": {
