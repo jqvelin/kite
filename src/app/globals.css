@@ -41,6 +41,10 @@
     ::file-selector-button {
         @apply border-[var(--color-border)];
     }
+
+    button {
+        @apply cursor-pointer;
+    }
 }
 
 @theme {
