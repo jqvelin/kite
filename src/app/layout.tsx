@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import { ReactNode } from "react";
 
+import { RootStoreProvider } from "./_providers/RootStore";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -28,7 +29,9 @@ export default async function RootLayout({
     return (
         <html lang="ru">
             <body className={manrope.className}>
-                {session ? children : authPage}
+                <RootStoreProvider>
+                    {session ? children : authPage}
+                </RootStoreProvider>
             </body>
         </html>
     );

@@ -1,14 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { useRootStore } from "@/app/_providers/RootStore";
+import { observer } from "mobx-react-lite";
 
-import { Tab } from "../model/Tab.type";
 import { ActiveTabToggler } from "./ActiveTabToggler";
 import { ChatsTab } from "./ChatsTab";
 import { UsersTab } from "./UsersTab";
 
-export const SidebarContents = () => {
-    const [activeTab, setActiveTab] = useState<Tab>("chats");
+export const SidebarContents = observer(() => {
+    const {
+        sidebarStore: { activeTab, setActiveTab }
+    } = useRootStore();
 
     return (
         <div className="flex-1 flex flex-col">
@@ -19,4 +21,4 @@ export const SidebarContents = () => {
             {activeTab === "chats" ? <ChatsTab /> : <UsersTab />}
         </div>
     );
-};
+});

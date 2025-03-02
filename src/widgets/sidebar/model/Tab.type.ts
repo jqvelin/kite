@@ -1,1 +1,3 @@
-export type Tab = "chats" | "users";
+import { TABS } from "../config/tabs";
+
+export type Tab = keyof typeof TABS;
