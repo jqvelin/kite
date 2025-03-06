@@ -12,6 +12,7 @@ import {
     useRef,
     useState
 } from "react";
+import { Transition, TransitionStatus } from "react-transition-group";
 
 type DropdownMenuContextType = {
     isOpen: boolean;
@@ -32,7 +33,7 @@ const useDropdownMenu = () => {
     return dropdownMenuContext;
 };
 
-export const DropdownMenu = ({ children }: { children: ReactNode }) => {
+const DropdownMenu = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
 
     return (
@@ -42,7 +43,17 @@ export const DropdownMenu = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export const DropdownMenuContent = ({ children }: { children: ReactNode }) => {
+const DROPDOWN_MENU_TRANSITION_STATE_CLASSNAMES: {
+    [key in TransitionStatus]: string;
+} = {
+    entering: "opacity-100 scale-100",
+    entered: "opacity-100 scale-100",
+    exiting: "opacity-0 scale-95",
+    exited: "opacity-0 scale-95",
+    unmounted: "opacity-0 scale-95"
+};
+
+const DropdownMenuContent = ({ children }: { children: ReactNode }) => {
     const dropdownMenuContentRef = useRef<HTMLUListElement>(null);
     const { isOpen, setIsOpen } = useDropdownMenu();
 
@@ -76,16 +87,29 @@ export const DropdownMenuContent = ({ children }: { children: ReactNode }) => {
     }, [isOpen]);
 
     return (
-        <ul
-            ref={dropdownMenuContentRef}
-            className={`flex flex-col bg-background border-2 p-sm absolute left-1/2 rounded-sm -translate-x-1/2 transition-all z-1 ${isOpen ? "pointer-events-auto opacity-100 scale-100" : "pointer-events-none opacity-0 scale-95"}`}
+        <Transition
+            nodeRef={dropdownMenuContentRef}
+            in={isOpen}
+            timeout={400}
+            mountOnEnter
+            unmountOnExit
         >
-            {children}
-        </ul>
+            {(state) => (
+                <ul
+                    ref={dropdownMenuContentRef}
+                    className={[
+                        "flex flex-col bg-background border-2 p-sm absolute left-1/2 rounded-sm -translate-x-1/2 transition-all z-1",
+                        DROPDOWN_MENU_TRANSITION_STATE_CLASSNAMES[state]
+                    ].join(" ")}
+                >
+                    {children}
+                </ul>
+            )}
+        </Transition>
     );
 };
 
-export const DropdownMenuItem = ({ children }: { children: ReactNode }) => {
+const DropdownMenuItem = ({ children }: { children: ReactNode }) => {
     return (
         <li className="[&:not(:last-child)]:border-b-2 py-sm [&:first-child]:pt-0 [&:last-child]:pb-0">
             {children}
@@ -97,7 +121,7 @@ type DropdownMenuTriggerProps = PropsWithChildren<
     ComponentPropsWithRef<"button">
 >;
 
-export const DropdownMenuTrigger = (props: DropdownMenuTriggerProps) => {
+const DropdownMenuTrigger = (props: DropdownMenuTriggerProps) => {
     const { isOpen, setIsOpen } = useDropdownMenu();
     const dropdownTriggerRef = useRef<HTMLButtonElement>(null);
 
@@ -110,4 +134,11 @@ export const DropdownMenuTrigger = (props: DropdownMenuTriggerProps) => {
             {props.children}
         </button>
     );
+};
+
+export {
+    DropdownMenu,
+    DropdownMenuTrigger,
+    DropdownMenuContent,
+    DropdownMenuItem
 };
