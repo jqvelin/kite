@@ -41,5 +41,12 @@ export const nextAuthConfig: NextAuthConfig = {
                     );
             }
         })
-    ]
+    ],
+    callbacks: {
+        // useSession возвращает лишь часть полей по умолчанию.
+        // Заставляем его возвращать полную сессию.
+        session({ session }) {
+            return session;
+        }
+    }
 };
