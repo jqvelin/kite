@@ -20,6 +20,9 @@
         --margin-sm: 0.5rem;
         --margin-md: 1rem;
         --margin-lg: 2rem;
+
+        --z-dropdown-menu: 1;
+        --z-dialog: 2;
     }
 }
 
