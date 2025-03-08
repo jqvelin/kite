@@ -1,9 +1,14 @@
+import { memo } from "react";
+
 type KiteIconProps = {
     transparentBg?: boolean;
     size: string | undefined;
 };
 
-export const KiteIcon = ({ transparentBg, size = "1rem" }: KiteIconProps) => (
+const KiteIconUnoptimized = ({
+    transparentBg,
+    size = "1rem"
+}: KiteIconProps) => (
     <svg
         height={size}
         width={size}
@@ -59,3 +64,5 @@ export const KiteIcon = ({ transparentBg, size = "1rem" }: KiteIconProps) => (
         </g>
     </svg>
 );
+
+export const KiteIcon = memo(KiteIconUnoptimized);

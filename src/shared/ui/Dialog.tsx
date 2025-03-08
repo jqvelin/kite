@@ -173,13 +173,13 @@ const DialogOverlay = ({
         );
 
         return () => controller.abort();
-    }, []);
+    }, [ref, setIsOpen]);
 
     return createPortal(
         <FocusTrap>
             <div
                 className={[
-                    "fixed w-full h-full top-0 left-0 bg-black/60 flex items-center justify-center transition-opacity",
+                    "fixed w-full h-full top-0 left-0 bg-black/60 flex items-center justify-center transition-opacity z-(--z-dialog)",
                     className
                 ].join(" ")}
                 ref={ref}
