@@ -1,20 +1,20 @@
 "use client";
 
 import {
-    UserRegistrationSchema,
-    type UserRegistrationType,
+    type UserRegistrationForm,
+    UserRegistrationFormSchema,
     authenticateUser,
     createUser
-} from "@/features/auth";
-import { UserSignInSchema, type UserSignInType } from "@/features/auth";
+} from "@/entities/user";
+import { type UserSignInForm, UserSignInFormSchema } from "@/entities/user";
 import { Button, Input } from "@/shared/ui";
+import { ErrorAlert } from "@/shared/ui";
 import { noSSR } from "@/shared/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { getRandomUsername } from "../utils/getRandomUsername";
-import { ErrorAlert } from "./ErrorAlert";
 
 // Компонент позволяет переключаться между формами регистрации и входа,
 // а при успешной отправке верификационного письма скрывается.
@@ -54,9 +54,9 @@ export const AuthForm = ({ setIsMagicLinkSent }: AuthFormProps) => {
 
 export const SignInForm = ({ setIsMagicLinkSent }: AuthFormProps) => {
     const { register, handleSubmit, formState, setError } =
-        useForm<UserSignInType>({
+        useForm<UserSignInForm>({
             mode: "onTouched",
-            resolver: zodResolver(UserSignInSchema)
+            resolver: zodResolver(UserSignInFormSchema)
         });
 
     const formErrors = formState.errors;
@@ -107,9 +107,9 @@ export const SignInForm = ({ setIsMagicLinkSent }: AuthFormProps) => {
 export const RegistrationForm = noSSR<AuthFormProps>(
     ({ setIsMagicLinkSent }: AuthFormProps) => {
         const { register, formState, handleSubmit, setError } =
-            useForm<UserRegistrationType>({
+            useForm<UserRegistrationForm>({
                 mode: "onTouched",
-                resolver: zodResolver(UserRegistrationSchema)
+                resolver: zodResolver(UserRegistrationFormSchema)
             });
 
         const formErrors = formState.errors;

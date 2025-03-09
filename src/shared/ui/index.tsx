@@ -4,3 +4,4 @@ export * from "./DropdownMenu";
 export * from "./Dialog";
 export { KiteIcon } from "./KiteIcon";
 export { KiteAnimation } from "./KiteAnimation";
+export { ErrorAlert } from "./ErrorAlert";
