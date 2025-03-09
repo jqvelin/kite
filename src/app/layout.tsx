@@ -1,10 +1,9 @@
-import { auth } from "@/features/auth";
+import { auth } from "@/shared/auth";
 import type { Metadata } from "next";
-import { SessionProvider } from "next-auth/react";
 import { Manrope } from "next/font/google";
 import { ReactNode } from "react";
 
-import { RootStoreProvider } from "./_providers/RootStore";
+import { WithProviders } from "./_providers";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -30,14 +29,7 @@ export default async function RootLayout({
     return (
         <html lang="ru">
             <body className={manrope.className}>
-                <SessionProvider
-                    session={session}
-                    refetchOnWindowFocus={false}
-                >
-                    <RootStoreProvider>
-                        {session ? children : authPage}
-                    </RootStoreProvider>
-                </SessionProvider>
+                <WithProviders>{session ? children : authPage}</WithProviders>
             </body>
         </html>
     );

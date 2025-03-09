@@ -1,5 +1,5 @@
-import { SidebarStore } from "@/widgets/sidebar";
+import { DashboardStore } from "@/widgets/dashboard";
 
 export class RootStore {
-    sidebarStore = new SidebarStore();
+    dashboardStore = new DashboardStore();
 }
