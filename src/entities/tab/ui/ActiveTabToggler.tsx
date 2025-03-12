@@ -25,7 +25,7 @@ export const ActiveTabToggler = ({
         }
 
         return 0;
-    }, [tabs]);
+    }, [tabs, activeTab]);
 
     return (
         <div className="w-full flex relative h-12 border-b-1">
