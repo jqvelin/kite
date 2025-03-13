@@ -15,6 +15,8 @@ import { createPortal } from "react-dom";
 import { CgClose } from "react-icons/cg";
 import { Transition, TransitionStatus } from "react-transition-group";
 
+import { useEscape } from "../hooks";
+
 type DialogContextType = {
     isOpen: boolean;
     setIsOpen: (nextIsOpen: boolean) => void;
@@ -40,6 +42,8 @@ const Dialog = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         document.body.style.overflow = isOpen ? "hidden" : "";
     }, [isOpen]);
+
+    useEscape(() => setIsOpen(false));
 
     return (
         <DialogContext.Provider value={{ isOpen, setIsOpen }}>
