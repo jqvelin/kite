@@ -1,10 +1,9 @@
 "use client";
 
+import { UserAvatar } from "@/entities/user";
 import { Button } from "@/shared/ui";
 import { Session } from "next-auth";
-import Image from "next/image";
 import { useState } from "react";
-import { BiUser } from "react-icons/bi";
 import { PiPencil } from "react-icons/pi";
 
 import { ChangeUsernameForm } from "./ChangeUsernameForm";
@@ -20,16 +19,7 @@ export const ChangeUsernameSetting = ({ session }: ChangeUsernameProps) => {
         <div>
             <div className="flex items-center justify-between gap-sm">
                 <div className="flex items-center gap-md">
-                    {session?.user?.image ? (
-                        <Image
-                            src={session.user.image}
-                            width={50}
-                            height={50}
-                            alt="Аватар"
-                        />
-                    ) : (
-                        <BiUser size="3rem" />
-                    )}
+                    <UserAvatar avatarSrc={session?.user?.image} />
                     {isChangingUsername ? (
                         <ChangeUsernameForm
                             userId={session?.user?.id as string}

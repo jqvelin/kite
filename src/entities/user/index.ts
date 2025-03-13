@@ -1,5 +1,7 @@
 export { type User } from "./model/user.type";
 
+export { UserAvatar } from "./ui/UserAvatar";
+
 export { UserRegistrationFormSchema } from "./model/userRegistrationForm.schema";
 export { type UserRegistrationForm } from "./model/userRegistrationForm.type";
 export { type UserRegistrationResponse } from "./model/userRegistrationResponse.type";
