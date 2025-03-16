@@ -6,15 +6,20 @@ import { LuEye, LuEyeClosed } from "react-icons/lu";
 
 type InputProps = ComponentPropsWithRef<"input">;
 
-export const Input = (props: InputProps) => {
-    switch (props.type) {
+export const Input = ({ type, className, ...props }: InputProps) => {
+    switch (type) {
         case "password": {
-            return <PasswordInput {...props} />;
+            return (
+                <PasswordInput
+                    className={className}
+                    {...props}
+                />
+            );
         }
 
         case "search": {
             return (
-                <div className="relative w-full">
+                <div className={["relative w-full", className].join(" ")}>
                     <BiSearch
                         size="1.5rem"
                         className="absolute left-2 top-1/2 -translate-y-1/2"
@@ -56,12 +61,12 @@ const PasswordInput = (props: InputProps) => {
     );
 };
 
-const BaseInput = (props: InputProps) => (
+const BaseInput = ({ className, ...props }: InputProps) => (
     <input
-        {...props}
         className={[
             "p-sm border-2 rounded-md w-full shadow-xs outline-accent",
-            props.className
+            className
         ].join(" ")}
+        {...props}
     />
 );

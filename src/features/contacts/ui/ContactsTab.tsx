@@ -1,21 +1,27 @@
+"use client";
+
 import { Input } from "@/shared/ui";
-import { FiUsers } from "react-icons/fi";
+import { useState } from "react";
+
+import { ContactsList } from "./ContactsList";
+import { SearchContactsResultsList } from "./SearchContactsResultsList";
 
 export const ContactsTab = () => {
+    const [searchQueryName, setSearchQueryName] = useState("");
+
     return (
         <div className="flex-1 flex flex-col items-center p-sm">
-            <Input type="search" />
-            <ContactsNotFound />
+            <Input
+                type="search"
+                value={searchQueryName}
+                onChange={(e) => setSearchQueryName(e.target.value)}
+                className="mb-md"
+            />
+            {searchQueryName ? (
+                <SearchContactsResultsList searchQueryName={searchQueryName} />
+            ) : (
+                <ContactsList />
+            )}
         </div>
     );
 };
-
-const ContactsNotFound = () => (
-    <div className="flex flex-col items-center text-center my-auto">
-        <FiUsers className="size-12 md:size-16 xl:size-18 mb-md" />
-        <h3 className="text-lg md:text-xl xl:text-2xl font-bold mb-sm">
-            Никого не найдено
-        </h3>
-        <h4 className="font-medium">Попробуйте изменить запрос</h4>
-    </div>
-);
