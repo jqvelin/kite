@@ -16,6 +16,8 @@ import React, {
 } from "react";
 import { Transition, TransitionStatus } from "react-transition-group";
 
+import { useEscape } from "../hooks";
+
 type DropdownMenuContextType = {
     isOpen: boolean;
     setIsOpen: (nextIsOpen: boolean) => void;
@@ -37,6 +39,12 @@ const useDropdownMenu = () => {
 
 const DropdownMenu = ({ children }: { children: ReactNode }) => {
     const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        document.body.style.overflow = isOpen ? "hidden" : "";
+    }, [isOpen]);
+
+    useEscape(() => setIsOpen(false));
 
     return (
         <DropdownMenuContext.Provider value={{ isOpen, setIsOpen }}>
