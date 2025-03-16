@@ -1,4 +1,4 @@
-export { type User } from "./model/user.type";
+export type { User, UserSearchResult } from "./model/user.type";
 
 export { UserAvatar } from "./ui/UserAvatar";
 
@@ -12,3 +12,5 @@ export { type UserSignInResponse } from "./model/userSignInResponse.type";
 
 export { authenticateUser } from "./api/authenticateUser";
 export { createUser } from "./api/createUser";
+
+export { useGetUsersByNameQuery } from "./api/useGetUsersByNameQuery";

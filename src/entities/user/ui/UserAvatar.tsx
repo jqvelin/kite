@@ -18,7 +18,7 @@ export const UserAvatar = ({
                 alt="Аватар"
                 width={50}
                 height={50}
-                className={["shrink-0", className].join(" ")}
+                className={["shrink-0", "rounded-full", className].join(" ")}
             />
         );
     } else {
