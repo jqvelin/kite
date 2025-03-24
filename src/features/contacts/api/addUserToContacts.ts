@@ -5,7 +5,10 @@ import { db } from "@/shared/api";
 import { PrismaClientValidationError } from "@prisma/client/runtime/library";
 
 type AddUserToContactsResponse = {
-    user?: User;
+    data?: {
+        ownerId: User["id"];
+        contactId: User["id"];
+    };
     error?: {
         message: string;
     };
@@ -16,20 +19,14 @@ export const addUserToContacts = async (
     userId: User["id"]
 ): Promise<AddUserToContactsResponse> => {
     try {
-        const user = await db.user.update({
-            where: {
-                id: contactsOfId
-            },
+        const data = await db.contact.create({
             data: {
-                contacts: {
-                    connect: {
-                        id: userId
-                    }
-                }
+                ownerId: contactsOfId,
+                contactId: userId
             }
         });
 
-        return { user };
+        return { data };
     } catch (e) {
         if (e instanceof PrismaClientValidationError) {
             return {

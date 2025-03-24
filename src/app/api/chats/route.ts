@@ -12,34 +12,27 @@ export const GET = async (req: NextRequest) => {
         req.nextUrl.searchParams
     );
 
-    if (!searchParams.contactOf) {
+    if (!searchParams.memberId) {
         return new NextResponse(null, { status: 400 });
     }
 
-    if (searchParams.contactOf !== session.user?.id) {
+    if (searchParams.memberId !== session.user?.id) {
         return new NextResponse(null, { status: 403 });
     }
 
-    searchParams.contactOf = {
+    searchParams.members = {
         some: {
-            ownerId: searchParams.contactOf
+            id: searchParams.memberId
         }
     };
 
-    const users = await db.user.findMany({
+    delete searchParams.memberId;
+
+    const chats = await db.chat.findMany({
         where: {
-            ...searchParams,
-            name: {
-                contains: searchParams.name as string,
-                mode: "insensitive"
-            }
-        },
-        select: {
-            id: true,
-            name: true,
-            image: true
+            ...searchParams
         }
     });
 
-    return NextResponse.json(users);
+    return NextResponse.json(chats);
 };

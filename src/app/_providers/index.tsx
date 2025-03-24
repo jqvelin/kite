@@ -14,11 +14,11 @@ export const WithProviders = async ({ children }: { children: ReactNode }) => {
             session={session}
             refetchOnWindowFocus={false}
         >
-            <SocketProvider>
-                <QueryClientProvider>
-                    <RootStoreProvider>{children}</RootStoreProvider>
-                </QueryClientProvider>
-            </SocketProvider>
+            <RootStoreProvider>
+                <SocketProvider>
+                    <QueryClientProvider>{children}</QueryClientProvider>
+                </SocketProvider>
+            </RootStoreProvider>
         </SessionProvider>
     );
 };
