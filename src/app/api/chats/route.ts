@@ -31,6 +31,10 @@ export const GET = async (req: NextRequest) => {
     const chats = await db.chat.findMany({
         where: {
             ...searchParams
+        },
+        include: {
+            members: true,
+            messages: true
         }
     });
 

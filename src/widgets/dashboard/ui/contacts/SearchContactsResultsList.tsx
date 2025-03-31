@@ -1,10 +1,10 @@
 "use client";
 
 import { type User, useGetUsersByNameQuery } from "@/entities/user";
+import { useSearchContactsQueryData } from "@/features/contacts";
+import { useSplitSearchContactsResults } from "@/features/contacts";
 import { useDebouncedValue } from "@/shared/hooks";
 
-import { useSearchContactsQueryData } from "../hooks/useSearchContactsQueryData";
-import { useSplitSearchContactsResults } from "../hooks/useSplitSearchContactsResults";
 import { ContactCard } from "./ContactCard";
 import { ContactsListSkeleton } from "./ContactsListSkeleton";
 import { UsersNotFound } from "./UsersNotFound";

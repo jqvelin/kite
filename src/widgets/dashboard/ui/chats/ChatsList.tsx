@@ -1,9 +1,9 @@
 "use client";
 
+import { useGetChatsQuery } from "@/features/chats";
 import { observer } from "mobx-react-lite";
 import { useSession } from "next-auth/react";
 
-import { useGetChatsQuery } from "../api/useGetChatsQuery";
 import { ChatCard } from "./ChatCard";
 import { ChatsNotFound } from "./ChatsNotFound";
 

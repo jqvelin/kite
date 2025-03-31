@@ -1,2 +1,4 @@
-export { ContactsTab } from "./ui/ContactsTab";
-export { ContactsList } from "./ui/ContactsList";
+export { useSearchContactsQueryData } from "./hooks/useSearchContactsQueryData";
+export { useSplitSearchContactsResults } from "./hooks/useSplitSearchContactsResults";
+export { useGetContactsQuery } from "./api/useGetContactsQuery";
+export { addUserToContacts } from "./api/addUserToContacts";

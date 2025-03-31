@@ -15,6 +15,6 @@ export const useSplitSearchContactsResults = (
                     !contacts?.some((contact) => contact.id === user.id) &&
                     user.id !== session?.user?.id
             ),
-        [contacts, unfilteredUsers]
+        [contacts, unfilteredUsers, session?.user?.id]
     );
 };

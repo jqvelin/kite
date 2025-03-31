@@ -15,5 +15,5 @@ export const useEscape = (callback: (...args: unknown[]) => void) => {
         );
 
         return () => controller.abort();
-    }, []);
+    }, [callback]);
 };

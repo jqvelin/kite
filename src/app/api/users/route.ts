@@ -12,19 +12,15 @@ export const GET = async (req: NextRequest) => {
         req.nextUrl.searchParams
     );
 
-    if (!searchParams.contactOf) {
-        return new NextResponse(null, { status: 400 });
-    }
-
-    if (searchParams.contactOf !== session.user?.id) {
+    if (searchParams.contactOf && searchParams.contactOf !== session.user?.id) {
         return new NextResponse(null, { status: 403 });
+    } else if (searchParams.contactOf) {
+        searchParams.contactOf = {
+            some: {
+                ownerId: searchParams.contactOf
+            }
+        };
     }
-
-    searchParams.contactOf = {
-        some: {
-            ownerId: searchParams.contactOf
-        }
-    };
 
     const users = await db.user.findMany({
         where: {

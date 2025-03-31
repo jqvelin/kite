@@ -42,7 +42,7 @@ model Message {
   body     String
   sentBy   User     @relation(fields: [sentById], references: [id], onDelete: Cascade)
   sentById String
-  sentAt   DateTime
+  sentAt   DateTime @default(now())
 }
 
 model Chat {

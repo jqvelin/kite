@@ -1,6 +1,7 @@
 import { Tab } from "@/entities/tab";
-import { ChatsTab } from "@/features/chats";
-import { ContactsTab } from "@/features/contacts";
+
+import { ChatsTab } from "../ui/chats/ChatsTab";
+import { ContactsTab } from "../ui/contacts/ContactsTab";
 
 export const getActiveTabComponent = (activeTab: Tab) => {
     switch (activeTab) {
