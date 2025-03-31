@@ -17,7 +17,7 @@ export const GET = async (req: NextRequest) => {
     } else if (searchParams.contactOf) {
         searchParams.contactOf = {
             some: {
-                id: searchParams.contactOf
+                ownerId: searchParams.contactOf
             }
         };
     }

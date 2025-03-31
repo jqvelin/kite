@@ -8,6 +8,7 @@ import React, {
     ReactNode,
     RefObject,
     createContext,
+    useCallback,
     useContext,
     useEffect,
     useLayoutEffect,
@@ -44,7 +45,9 @@ const DropdownMenu = ({ children }: { children: ReactNode }) => {
         document.body.style.overflow = isOpen ? "hidden" : "";
     }, [isOpen]);
 
-    useEscape(() => setIsOpen(false));
+    const closeDropdownMenu = useCallback(() => setIsOpen(false), []);
+
+    useEscape(closeDropdownMenu);
 
     return (
         <DropdownMenuContext.Provider value={{ isOpen, setIsOpen }}>

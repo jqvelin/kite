@@ -19,7 +19,11 @@ app.prepare().then(() => {
     io.on("connection", (socket) => {
         console.log(`${socket.id} is connected!`);
 
-        socket.on("send_message", (message) => {
+        socket.on("join-room", (chatRoomId) => {
+            console.log(`${socket.id} joins room ${chatRoomId}`);
+        });
+
+        socket.on("send-message", (message) => {
             console.log(`${socket.id} says "${message.body}"`);
         });
 

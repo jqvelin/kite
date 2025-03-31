@@ -5,7 +5,7 @@ export class DashboardStore {
     activeTab: Tab = "chats";
 
     constructor() {
-        makeAutoObservable(this);
+        makeAutoObservable(this, {}, { autoBind: true });
     }
 
     setActiveTab = (tab: Tab) => {

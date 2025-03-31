@@ -13,13 +13,48 @@ model User {
   email         String    @unique
   emailVerified DateTime?
   image         String?
-  contacts      User[]    @relation("UserContacts")
-  contactOf     User[]    @relation("UserContacts")
+  memberOf      Chat[]
+  messages      Message[]
   accounts      Account[]
   sessions      Session[]
 
+  contacts  Contact[] @relation("UserContactsOwner")
+  contactOf Contact[] @relation("UserContactsTarget")
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Contact {
+  owner   User   @relation("UserContactsOwner", fields: [ownerId], references: [id], onDelete: Cascade)
+  ownerId String
+
+  contact   User   @relation("UserContactsTarget", fields: [contactId], references: [id], onDelete: Cascade)
+  contactId String
+
+  @@id([ownerId, contactId])
+}
+
+model Message {
+  id       String   @id @default(cuid())
+  chat     Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  chatId   String
+  body     String
+  sentBy   User     @relation(fields: [sentById], references: [id], onDelete: Cascade)
+  sentById String
+  sentAt   DateTime @default(now())
+}
+
+model Chat {
+  id       String    @id @default(cuid())
+  type     ChatType  @default(DIALOG)
+  members  User[]
+  messages Message[]
+}
+
+enum ChatType {
+  DIALOG
+  GROUP
 }
 
 model Account {

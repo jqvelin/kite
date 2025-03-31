@@ -1,8 +1,8 @@
 "use client";
 
+import { useGetContactsQuery } from "@/features/contacts";
 import { useSession } from "next-auth/react";
 
-import { useGetContactsQuery } from "../api/useGetContactsQuery";
 import { ContactCard } from "./ContactCard";
 import { ContactsNotFound } from "./ContactsNotFound";
 

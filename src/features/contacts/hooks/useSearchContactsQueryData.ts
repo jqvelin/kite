@@ -12,7 +12,7 @@ export const useSearchContactsQueryData = (
             queryClient
                 .getQueryData<UserSearchResult[]>(["contacts"])
                 ?.filter((contact) => contact.name === searchQueryName),
-        [searchQueryName]
+        [searchQueryName, queryClient]
     );
 
     return contacts;

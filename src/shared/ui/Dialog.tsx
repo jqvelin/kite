@@ -6,6 +6,7 @@ import {
     PropsWithChildren,
     ReactNode,
     createContext,
+    useCallback,
     useContext,
     useEffect,
     useRef,
@@ -43,7 +44,9 @@ const Dialog = ({ children }: { children: ReactNode }) => {
         document.body.style.overflow = isOpen ? "hidden" : "";
     }, [isOpen]);
 
-    useEscape(() => setIsOpen(false));
+    const closeDialog = useCallback(() => setIsOpen(false), []);
+
+    useEscape(closeDialog);
 
     return (
         <DialogContext.Provider value={{ isOpen, setIsOpen }}>

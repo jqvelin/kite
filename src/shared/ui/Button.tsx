@@ -1,4 +1,5 @@
 import { ComponentPropsWithRef } from "react";
+import { twMerge } from "tailwind-merge";
 
 type ButtonVariants = "primary" | "link" | "ghost" | "destructive";
 
@@ -29,11 +30,11 @@ type ButtonProps = ComponentPropsWithRef<"button"> & {
 export const Button = (props: ButtonProps) => (
     <button
         {...props}
-        className={[
+        className={twMerge(
             "font-semibold transition-colors cursor-pointer",
             getButtonVariantClasses(props.variant),
             props.className
-        ].join(" ")}
+        )}
     >
         {props.children}
     </button>
