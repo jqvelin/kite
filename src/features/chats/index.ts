@@ -5,4 +5,6 @@ export { type Message } from "./model/Message.type";
 export { ChatImage } from "./ui/ChatImage";
 export { useGetChatsQuery } from "./api/useGetChatsQuery";
 export { createChat } from "./api/createChat";
+export { sendMessage } from "./api/sendMessage";
+export { SEND_MESSAGE_ERRORS } from "./utils/constants";
 export { getChatRoomNameByMembers } from "./utils/getChatRoomNameByMembers";
