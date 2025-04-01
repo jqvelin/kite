@@ -31,7 +31,7 @@ export const Button = (props: ButtonProps) => (
     <button
         {...props}
         className={twMerge(
-            "font-semibold transition-colors cursor-pointer",
+            "font-semibold transition-[opacity,colors] cursor-pointer disabled:pointer-events-none disabled:opacity-70",
             getButtonVariantClasses(props.variant),
             props.className
         )}
