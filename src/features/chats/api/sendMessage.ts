@@ -10,12 +10,12 @@ import { SEND_MESSAGE_ERRORS } from "../utils/constants";
 
 export const sendMessage = async (
     chatId: Chat["id"],
-    message: Message
+    messageBody: Message["body"]
 ): Promise<SendMessageResponse> => {
     const session = await auth();
 
     try {
-        if (!message.body.length) {
+        if (!messageBody.length) {
             return {
                 error: {
                     message: SEND_MESSAGE_ERRORS.message.empty
@@ -23,7 +23,7 @@ export const sendMessage = async (
             };
         }
 
-        if (message.body.length > 500) {
+        if (messageBody.length > 500) {
             return {
                 error: {
                     message: SEND_MESSAGE_ERRORS.message.tooLong
@@ -33,7 +33,7 @@ export const sendMessage = async (
 
         const createdMessage = await db.message.create({
             data: {
-                ...message,
+                body: messageBody,
                 chatId,
                 sentById: session?.user?.id as string
             }

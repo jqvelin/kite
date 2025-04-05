@@ -8,5 +8,5 @@
         "isolatedModules": false,
         "noEmit": false
     },
-    "include": ["src/app/server.ts"]
+    "include": ["server.ts"]
 }

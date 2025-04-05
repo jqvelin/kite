@@ -2,6 +2,7 @@ export { type ClientToServerEvent } from "./model/ClientToServerEvent.type";
 export { type ServerToClientEvent } from "./model/ServerToClientEvent.type";
 export { type Chat } from "./model/Chat.type";
 export { type Message } from "./model/Message.type";
+export { MessageBubble } from "./ui/MessageBubble";
 export { ChatImage } from "./ui/ChatImage";
 export { useGetChatsQuery } from "./api/useGetChatsQuery";
 export { createChat } from "./api/createChat";

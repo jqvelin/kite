@@ -20,8 +20,8 @@ export class RootStore {
         this.dashboardStore = new DashboardStore();
     }
 
-    connectToWebSocketServer() {
-        this.socket = io();
+    connectToWebSocketServer(userId: User["id"]) {
+        this.socket = io({ extraHeaders: { "x-user-id": userId } });
     }
 
     disconnectFromWebSocketServer() {
@@ -33,17 +33,25 @@ export class RootStore {
         this.chatRoom = chatRoom;
     }
 
-    async sendMessage(senderId: User["id"], message: Message) {
+    receiveChatMessage(message: Message) {
+        this.chatRoom?.messages.push(message);
+    }
+
+    async sendMessage(senderId: User["id"], messageBody: Message["body"]) {
         if (!this.chatRoom) return;
 
         this.chatRoom?.messages.push({
-            ...message,
+            body: messageBody,
             chatId: this.chatRoom.id,
             id: crypto.randomUUID(),
             sentAt: new Date(),
             sentById: senderId
         });
 
-        await sendMessage(this.chatRoom.id, message);
+        const { message } = await sendMessage(this.chatRoom.id, messageBody);
+
+        if (message) {
+            this.socket?.emit("send-message", message);
+        }
     }
 }
