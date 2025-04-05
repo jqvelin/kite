@@ -29,9 +29,14 @@ export const ChatCard = ({ chat }: ChatCardProps) => {
         >
             <div className="h-16 flex items-center gap-md px-sm w-full">
                 <ChatImage />
-                <p className="font-semibold text-lg md:text-xl whitespace-nowrap overflow-hidden max-w-32 overflow-ellipsis">
-                    {chatName}
-                </p>
+                <div className="flex flex-col items-start">
+                    <p className="font-semibold text-lg md:text-xl whitespace-nowrap overflow-hidden max-w-32 overflow-ellipsis">
+                        {chatName}
+                    </p>
+                    <p className="text-sm">
+                        {chat.messages[chat.messages.length - 1]?.body}
+                    </p>
+                </div>
             </div>
         </Button>
     );

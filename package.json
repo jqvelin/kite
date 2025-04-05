@@ -3,10 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "nodemon src/app/server.ts",
+        "dev": "nodemon",
         "format": "prettier . --write",
-        "build": "next build",
-        "start": "cross-env NODE_ENV=production ts-node src/app/server.ts",
+        "build": "next build && tsc --project tsconfig.server.json",
+        "start": "cross-env NODE_ENV=production node dist/server.js",
         "lint": "next lint",
         "prepare": "husky"
     },

@@ -1,3 +1,1 @@
-export type Message = {
-    body: string;
-};
+export { type Message } from "@prisma/client";

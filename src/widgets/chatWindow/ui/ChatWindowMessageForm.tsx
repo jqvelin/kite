@@ -4,6 +4,7 @@ import { useRootStore } from "@/app/_providers";
 import { Button, ErrorAlert } from "@/shared/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
+import { observer } from "mobx-react-lite";
 import { useSession } from "next-auth/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { BiSend } from "react-icons/bi";
@@ -11,10 +12,11 @@ import { BiSend } from "react-icons/bi";
 import { MessageFormSchema } from "../model/MessageForm.schema";
 import { MessageForm } from "../model/MessageForm.type";
 
-export const ChatWindowMessageForm = () => {
+export const ChatWindowMessageForm = observer(() => {
     const {
         register,
         handleSubmit,
+        setValue,
         formState: { errors },
         watch
     } = useForm<MessageForm>({
@@ -25,7 +27,8 @@ export const ChatWindowMessageForm = () => {
     const queryClient = useQueryClient();
 
     const onSubmit: SubmitHandler<MessageForm> = async (message) => {
-        await sendMessage(session?.user?.id as string, message);
+        setValue("body", "");
+        await sendMessage(session?.user?.id as string, message.body);
         queryClient.invalidateQueries({ queryKey: ["chats"] });
     };
 
@@ -55,4 +58,4 @@ export const ChatWindowMessageForm = () => {
             </Button>
         </form>
     );
-};
+});
