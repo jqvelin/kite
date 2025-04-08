@@ -1,4 +1,5 @@
-import type { Chat, Message } from "@/features/chats";
+import { type User } from "@/entities/user";
+import type { Chat, Message, UserChatStatus } from "@/features/chats";
 import {
     type DefaultError,
     type QueryClient,
@@ -67,6 +68,47 @@ export class ChatsStore<
                     }
 
                     return chat;
+                });
+
+                return newChatsData;
+            }
+        );
+    }
+
+    changeChatterStatus(
+        chatterId: User["id"],
+        chatId: Chat["id"],
+        newStatus: UserChatStatus
+    ) {
+        this.queryClient.setQueryData<Chat[]>(
+            this.defaultOptions.queryKey,
+            (prevChatsData) => {
+                const newChatsData = prevChatsData?.map((chat) => {
+                    if (chat.id !== chatId) return chat;
+
+                    if (newStatus === "online") {
+                        const member = chat.members.find(
+                            (member) => member.id === chatterId
+                        );
+
+                        if (!member) {
+                            throw new Error(
+                                `No chatters with id ${chatterId} have been found`
+                            );
+                        }
+
+                        return {
+                            ...chat,
+                            onlineMembers: [...chat.onlineMembers, member]
+                        };
+                    }
+
+                    return {
+                        ...chat,
+                        onlineMembers: chat.onlineMembers.filter(
+                            (member) => member.id !== chatterId
+                        )
+                    };
                 });
 
                 return newChatsData;

@@ -1,6 +1,7 @@
 export { type ClientToServerEvent } from "./model/ClientToServerEvent.type";
 export { type ServerToClientEvent } from "./model/ServerToClientEvent.type";
 export { type Chat } from "./model/Chat.type";
+export { type UserChatStatus } from "./model/UserChatStatus.type";
 export { type Message } from "./model/Message.type";
 export { ChatsStore } from "./model/ChatsStore";
 export { MessageBubble } from "./ui/MessageBubble";

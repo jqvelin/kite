@@ -3,6 +3,19 @@
 import { useRootStore } from "@/app/_providers";
 import { ChatImage, getChatRoomNameByMembers } from "@/features/chats";
 import { useSession } from "next-auth/react";
+import { useRef } from "react";
+import { Transition, type TransitionStatus } from "react-transition-group";
+import { twMerge } from "tailwind-merge";
+
+const CHATTER_STATUS_TRANSITION_STATE_CLASSNAMES: {
+    [key in TransitionStatus]: string;
+} = {
+    entering: "translate-y-[calc(100%+1rem)] opacity-0",
+    entered: "translate-y-full opacity-100",
+    exiting: "translate-y-full opacity-0",
+    exited: "translate-y-full opacity-0",
+    unmounted: ""
+};
 
 export const ChatWindowHeader = () => {
     const { data: session } = useSession();
@@ -14,10 +27,41 @@ export const ChatWindowHeader = () => {
         currentChat!.members
     );
 
+    const isChatterOnline =
+        currentChat?.type === "DIALOG" &&
+        !!currentChat.onlineMembers.find(
+            (member) => member.id !== session?.user?.id
+        );
+
+    const userStatusRef = useRef<HTMLDivElement>(null);
+
     return (
         <div className="flex items-center gap-md">
             <ChatImage />
-            <div className="text-xl font-semibold">{chatRoomName}</div>
+            <div className="relative">
+                <div className="text-xl font-semibold">{chatRoomName}</div>
+                <Transition
+                    nodeRef={userStatusRef}
+                    in={isChatterOnline}
+                    timeout={400}
+                    mountOnEnter
+                    unmountOnExit
+                >
+                    {(state) => (
+                        <div
+                            ref={userStatusRef}
+                            className={twMerge(
+                                "absolute transition-all font-semibold bottom-0 whitespace-nowrap text-accent",
+                                CHATTER_STATUS_TRANSITION_STATE_CLASSNAMES[
+                                    state
+                                ]
+                            )}
+                        >
+                            В сети
+                        </div>
+                    )}
+                </Transition>
+            </div>
         </div>
     );
 };

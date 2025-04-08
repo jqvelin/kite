@@ -16,7 +16,8 @@ export const createChat = async ({
         },
         include: {
             members: true,
-            messages: true
+            messages: true,
+            onlineMembers: true
         }
     });
 
