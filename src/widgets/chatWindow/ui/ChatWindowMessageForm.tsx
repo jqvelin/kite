@@ -3,7 +3,6 @@
 import { useRootStore } from "@/app/_providers";
 import { Button, ErrorAlert } from "@/shared/ui";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useQueryClient } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import { useSession } from "next-auth/react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -24,12 +23,10 @@ export const ChatWindowMessageForm = observer(() => {
     });
     const { data: session } = useSession();
     const { sendMessage } = useRootStore();
-    const queryClient = useQueryClient();
 
     const onSubmit: SubmitHandler<MessageForm> = async (message) => {
         setValue("body", "");
         await sendMessage(session?.user?.id as string, message.body);
-        queryClient.invalidateQueries({ queryKey: ["chats"] });
     };
 
     return (

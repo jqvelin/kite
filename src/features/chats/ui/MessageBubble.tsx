@@ -16,10 +16,10 @@ export const MessageBubble = ({
 
     return (
         <div
-            className={`relative w-fit min-w-16 max-w-120 ${isSentByCurrentUser ? "ml-auto" : "mr-auto"}`}
+            className={`relative w-fit min-w-16 max-w-120 ${isSentByCurrentUser ? "self-end" : "self-start"}`}
         >
             <div
-                className={`border-2 p-sm rounded-sm ${isSentByCurrentUser ? "border-accent/50" : "border-border"}`}
+                className={`border-2 p-sm rounded-sm break-words ${isSentByCurrentUser ? "border-accent/50" : "border-border"}`}
             >
                 {message.body}
             </div>
