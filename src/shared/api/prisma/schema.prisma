@@ -17,6 +17,7 @@ model User {
   messages      Message[]
   accounts      Account[]
   sessions      Session[]
+  onlineIn      Chat[]    @relation("OnlineChatMembers")
 
   contacts  Contact[] @relation("UserContactsOwner")
   contactOf Contact[] @relation("UserContactsTarget")
@@ -46,10 +47,11 @@ model Message {
 }
 
 model Chat {
-  id       String    @id @default(cuid())
-  type     ChatType  @default(DIALOG)
-  members  User[]
-  messages Message[]
+  id            String    @id @default(cuid())
+  type          ChatType  @default(DIALOG)
+  members       User[]
+  onlineMembers User[]    @relation("OnlineChatMembers")
+  messages      Message[]
 }
 
 enum ChatType {

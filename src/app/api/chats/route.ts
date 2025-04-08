@@ -34,7 +34,8 @@ export const GET = async (req: NextRequest) => {
         },
         include: {
             members: true,
-            messages: true
+            messages: true,
+            onlineMembers: true
         }
     });
 

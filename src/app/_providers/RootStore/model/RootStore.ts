@@ -5,12 +5,14 @@ import {
     type ClientToServerEvent,
     type Message,
     type ServerToClientEvent,
+    type UserChatStatus,
     getChats,
     sendMessage
 } from "@/features/chats";
 import { queryClient } from "@/shared/api";
 import { DashboardStore } from "@/widgets/dashboard";
 import { makeAutoObservable } from "mobx";
+import { getSession } from "next-auth/react";
 import { type Socket, io } from "socket.io-client";
 
 export class RootStore {
@@ -19,7 +21,8 @@ export class RootStore {
     chatsStore = new ChatsStore(
         () => ({
             queryKey: ["chats"],
-            queryFn: getChats
+            queryFn: getChats,
+            staleTime: 60 * 1000
         }),
         queryClient
     );
@@ -32,8 +35,26 @@ export class RootStore {
         makeAutoObservable(this, {}, { autoBind: true });
     }
 
-    openChat(chatId: Chat["id"]) {
-        this.currentChatId = chatId;
+    async openChat(chatId: Chat["id"]) {
+        const session = await getSession();
+
+        if (this.currentChatId) {
+            this.socket?.emit(
+                "chatter-status-changed",
+                session?.user?.id as string,
+                this.currentChatId,
+                "offline"
+            );
+        }
+
+        this.setCurrentChatId(chatId);
+
+        this.socket?.emit(
+            "chatter-status-changed",
+            session?.user?.id as string,
+            chatId,
+            "online"
+        );
     }
 
     async sendMessage(senderId: User["id"], messageBody: Message["body"]) {
@@ -64,6 +85,10 @@ export class RootStore {
         );
     }
 
+    setCurrentChatId(chatId: Chat["id"]) {
+        this.currentChatId = chatId;
+    }
+
     connectToWebSocketServer(userId: User["id"]) {
         this.socket = io({ extraHeaders: { "x-user-id": userId } });
 
@@ -71,7 +96,16 @@ export class RootStore {
             this.chatsStore.receiveMessage(message);
         };
 
+        const changeChatterStatus = (
+            chatterId: User["id"],
+            chatId: Chat["id"],
+            newStatus: UserChatStatus
+        ) => {
+            this.chatsStore.changeChatterStatus(chatterId, chatId, newStatus);
+        };
+
         this.socket.on("receive-message", receiveMessage);
+        this.socket.on("chatter-status-changed", changeChatterStatus);
     }
 
     disconnectFromWebSocketServer() {

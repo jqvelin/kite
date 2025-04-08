@@ -29,7 +29,7 @@ app.prepare().then(() => {
 
         // Подключаем пользователя ко всем комнатам чатов, в которых он присутствует,
         // чтобы присылать новые сообщения в каждом из них.
-        const chats = await db.chat.findMany({
+        let chats = await db.chat.findMany({
             where: {
                 members: {
                     some: {
@@ -40,9 +40,62 @@ app.prepare().then(() => {
         });
         chats.forEach((chat) => socket.join(chat.id));
 
-        socket.on("join-room", (chatRoomId) => {
+        socket.on("join-room", async (chatRoomId) => {
             console.log(`${socket.id} joins room ${chatRoomId}`);
+
+            socket.join(chatRoomId);
+
+            chats = await db.chat.findMany({
+                where: {
+                    members: {
+                        some: {
+                            id: userId
+                        }
+                    }
+                }
+            });
         });
+
+        socket.on(
+            "chatter-status-changed",
+            async (userId, chatId, newStatus) => {
+                console.log(
+                    `Status of ${userId} has been changed to ${newStatus}`
+                );
+
+                if (newStatus === "online") {
+                    await db.user.update({
+                        where: {
+                            id: userId
+                        },
+                        data: {
+                            onlineIn: {
+                                connect: {
+                                    id: chatId
+                                }
+                            }
+                        }
+                    });
+                } else {
+                    await db.user.update({
+                        where: {
+                            id: userId
+                        },
+                        data: {
+                            onlineIn: {
+                                disconnect: {
+                                    id: chatId
+                                }
+                            }
+                        }
+                    });
+                }
+
+                socket
+                    .to(chatId)
+                    .emit("chatter-status-changed", userId, chatId, newStatus);
+            }
+        );
 
         socket.on("send-message", (message) => {
             console.log(`${socket.id} says "${message.body}"`);
@@ -51,6 +104,25 @@ app.prepare().then(() => {
 
         socket.on("disconnect", () => {
             console.warn(`${socket.id} is disconnected`);
+
+            chats.forEach(async (chat) => {
+                socket
+                    .to(chat.id)
+                    .emit("chatter-status-changed", userId, chat.id, "offline");
+
+                await db.user.update({
+                    where: {
+                        id: userId
+                    },
+                    data: {
+                        onlineIn: {
+                            disconnect: {
+                                id: chat.id
+                            }
+                        }
+                    }
+                });
+            });
         });
     });
 
