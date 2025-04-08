@@ -1,10 +1,14 @@
 "use client";
 
 import { useRootStore } from "@/app/_providers";
-import { MessageBubble } from "@/features/chats";
+import {
+    MessageBubble,
+    getChatMessagesGroupedByDate,
+    getMessageSentAtLocale
+} from "@/features/chats";
 import { observer } from "mobx-react-lite";
 import { useSession } from "next-auth/react";
-import { ComponentPropsWithRef } from "react";
+import { ComponentPropsWithRef, Fragment, useMemo } from "react";
 import { twMerge } from "tailwind-merge";
 
 import { useScrollOnMessageReception } from "../hooks/useScrollOnMessageReception";
@@ -17,6 +21,10 @@ export const ChatWindowMessages = observer(
 
         const { currentChat } = useRootStore();
 
+        const messagesGroupedByDate = useMemo(() => {
+            return getChatMessagesGroupedByDate(currentChat?.messages ?? []);
+        }, [currentChat?.messages]);
+
         const chatWindowMessagesRef = useScrollOnMessageReception();
 
         return (
@@ -28,14 +36,21 @@ export const ChatWindowMessages = observer(
                 )}
                 {...props}
             >
-                {currentChat?.messages.map((message) => (
-                    <MessageBubble
-                        key={message.id}
-                        message={message}
-                        isSentByCurrentUser={
-                            session?.user?.id === message.sentById
-                        }
-                    />
+                {messagesGroupedByDate.map(({ date, messages }) => (
+                    <Fragment key={date.toUTCString()}>
+                        <div className="self-center text-white bg-accent/50 px-sm rounded-full">
+                            {getMessageSentAtLocale(date)}
+                        </div>
+                        {messages.map((message) => (
+                            <MessageBubble
+                                key={message.id}
+                                message={message}
+                                isSentByCurrentUser={
+                                    session?.user?.id === message.sentById
+                                }
+                            />
+                        ))}
+                    </Fragment>
                 ))}
             </div>
         );

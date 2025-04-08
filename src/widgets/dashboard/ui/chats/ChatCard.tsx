@@ -35,10 +35,11 @@ export const ChatCard = ({ chat }: ChatCardProps) => {
                     <p className="font-semibold text-lg md:text-xl whitespace-nowrap overflow-hidden max-w-32 overflow-ellipsis">
                         {chatName}
                     </p>
-                    <p className="text-sm">
-                        {(lastChatMessage.sentById === session?.user?.id
-                            ? "Вы: "
-                            : "") + lastChatMessage.body}
+                    <p className="text-sm max-w-64 text-start overflow-ellipsis overflow-hidden">
+                        {lastChatMessage.sentById === session?.user?.id && (
+                            <span className="text-accent/50">Вы:&nbsp;</span>
+                        )}
+                        {lastChatMessage.body}
                     </p>
                 </div>
             </div>

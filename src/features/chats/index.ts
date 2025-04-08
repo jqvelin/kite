@@ -10,3 +10,5 @@ export { createChat } from "./api/createChat";
 export { sendMessage } from "./api/sendMessage";
 export { SEND_MESSAGE_ERRORS } from "./utils/constants";
 export { getChatRoomNameByMembers } from "./utils/getChatRoomNameByMembers";
+export { getChatMessagesGroupedByDate } from "./utils/getChatMessagesGroupedByDate";
+export { getMessageSentAtLocale } from "./utils/getMessageSentAtLocale";
