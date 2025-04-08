@@ -3,12 +3,15 @@ import next from "next";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 
-import { ClientToServerEvent, ServerToClientEvent } from "./src/features/chats";
+import type {
+    ClientToServerEvent,
+    ServerToClientEvent
+} from "./src/features/chats";
 // проблемы с модулями при импортировании из barrel file
 import { db } from "./src/shared/api/prisma/db";
 
 const dev = process.env.NODE_ENV !== "production";
-const hostname = "localhost";
+const hostname = process.env.HOSTNAME;
 const port = Number(process.env.PORT);
 
 const app = next({ dev, hostname, port });
@@ -23,6 +26,9 @@ app.prepare().then(() => {
         console.log(`${socket.id} is connected!`);
 
         const userId = socket.handshake.headers["x-user-id"] as string;
+
+        // Подключаем пользователя ко всем комнатам чатов, в которых он присутствует,
+        // чтобы присылать новые сообщения в каждом из них.
         const chats = await db.chat.findMany({
             where: {
                 members: {
@@ -32,7 +38,6 @@ app.prepare().then(() => {
                 }
             }
         });
-
         chats.forEach((chat) => socket.join(chat.id));
 
         socket.on("join-room", (chatRoomId) => {

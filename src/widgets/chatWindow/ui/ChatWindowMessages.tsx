@@ -4,33 +4,20 @@ import { useRootStore } from "@/app/_providers";
 import { MessageBubble } from "@/features/chats";
 import { observer } from "mobx-react-lite";
 import { useSession } from "next-auth/react";
-import { ComponentPropsWithRef, useEffect, useRef } from "react";
+import { ComponentPropsWithRef } from "react";
 import { twMerge } from "tailwind-merge";
+
+import { useScrollOnMessageReception } from "../hooks/useScrollOnMessageReception";
 
 type ChatWindowMessagesProps = ComponentPropsWithRef<"div">;
 
 export const ChatWindowMessages = observer(
     ({ className, ...props }: ChatWindowMessagesProps) => {
         const { data: session } = useSession();
-        const { socket, chatRoom } = useRootStore();
 
-        const chatWindowMessagesRef = useRef<HTMLDivElement>(null);
+        const { currentChat } = useRootStore();
 
-        useEffect(() => {
-            const scrollToTheBottom = () => {
-                // не работает, так как сообщение добавляется в историю чата
-                // после вызова этой функции...
-                chatWindowMessagesRef.current?.scrollTo(
-                    0,
-                    chatWindowMessagesRef.current.scrollHeight
-                );
-            };
-            socket?.on("receive-message", scrollToTheBottom);
-
-            return () => {
-                socket?.off("receive-message", scrollToTheBottom);
-            };
-        }, [socket]);
+        const chatWindowMessagesRef = useScrollOnMessageReception();
 
         return (
             <div
@@ -41,7 +28,7 @@ export const ChatWindowMessages = observer(
                 )}
                 {...props}
             >
-                {chatRoom?.messages.map((message) => (
+                {currentChat?.messages.map((message) => (
                     <MessageBubble
                         key={message.id}
                         message={message}
