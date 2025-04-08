@@ -28,7 +28,7 @@ export const MessageBubble = ({
             >
                 <div>{hours + ":" + minutes}</div>
                 <div
-                    className={`w-4 aspect-square [clip-path:polygon(100%_0,_0_0,_100%_100%)] mr-1 ${isSentByCurrentUser ? "right-1 bg-accent/50" : "left-1 -scale-x-100 bg-border"}`}
+                    className={`w-4 aspect-square [clip-path:polygon(100%_0,_0_0,_100%_100%)] ${isSentByCurrentUser ? "right-1 bg-accent/50 mr-1" : "left-1 ml-1 -scale-x-100 bg-border"}`}
                 ></div>
             </div>
         </div>

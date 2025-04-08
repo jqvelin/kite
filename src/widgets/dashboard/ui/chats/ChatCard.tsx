@@ -13,19 +13,21 @@ type ChatCardProps = {
 export const ChatCard = ({ chat }: ChatCardProps) => {
     const { data: session } = useSession();
 
-    const { joinChatRoom } = useRootStore();
+    const { openChat } = useRootStore();
 
     const chatName = getChatRoomNameByMembers(
         session?.user?.id as string,
         chat.members
     );
 
+    const lastChatMessage = chat.messages[chat.messages.length - 1];
+
     return (
         <Button
             key={chat.id}
             variant="ghost"
             className="w-full"
-            onClick={() => joinChatRoom(chat)}
+            onClick={() => openChat(chat.id)}
         >
             <div className="h-16 flex items-center gap-md px-sm w-full">
                 <ChatImage />
@@ -34,7 +36,9 @@ export const ChatCard = ({ chat }: ChatCardProps) => {
                         {chatName}
                     </p>
                     <p className="text-sm">
-                        {chat.messages[chat.messages.length - 1]?.body}
+                        {(lastChatMessage.sentById === session?.user?.id
+                            ? "Вы: "
+                            : "") + lastChatMessage.body}
                     </p>
                 </div>
             </div>

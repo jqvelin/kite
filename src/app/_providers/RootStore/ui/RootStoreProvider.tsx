@@ -18,7 +18,7 @@ export const RootStoreProvider = noSSR(
             return () => {
                 rootStore?.disconnectFromWebSocketServer();
             };
-        }, [rootStore]);
+        }, [rootStore, session?.user?.id]);
 
         return (
             <RootStoreContext.Provider value={rootStore}>

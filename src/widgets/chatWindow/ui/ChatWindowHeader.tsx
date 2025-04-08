@@ -1,18 +1,17 @@
 "use client";
 
-import { Chat, ChatImage, getChatRoomNameByMembers } from "@/features/chats";
+import { useRootStore } from "@/app/_providers";
+import { ChatImage, getChatRoomNameByMembers } from "@/features/chats";
 import { useSession } from "next-auth/react";
 
-type ChatWindowHeaderProps = {
-    chatRoom: Chat;
-};
-
-export const ChatWindowHeader = ({ chatRoom }: ChatWindowHeaderProps) => {
+export const ChatWindowHeader = () => {
     const { data: session } = useSession();
+
+    const { currentChat } = useRootStore();
 
     const chatRoomName = getChatRoomNameByMembers(
         session?.user?.id as string,
-        chatRoom.members
+        currentChat!.members
     );
 
     return (

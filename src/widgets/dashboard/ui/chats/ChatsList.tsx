@@ -1,15 +1,15 @@
 "use client";
 
-import { useGetChatsQuery } from "@/features/chats";
+import { useRootStore } from "@/app/_providers";
 import { observer } from "mobx-react-lite";
-import { useSession } from "next-auth/react";
 
 import { ChatCard } from "./ChatCard";
 import { ChatsNotFound } from "./ChatsNotFound";
 
 export const ChatsList = observer(() => {
-    const { data: session } = useSession();
-    const { data: chats } = useGetChatsQuery(session?.user?.id as string);
+    const {
+        chatsStore: { chats }
+    } = useRootStore();
 
     return (
         <div className="w-full flex flex-col flex-1">
