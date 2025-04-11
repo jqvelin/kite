@@ -3,6 +3,7 @@ import { makeAutoObservable } from "mobx";
 
 export class DashboardStore {
     activeTab: Tab = "chats";
+    chatsSearchQuery = "";
 
     constructor() {
         makeAutoObservable(this, {}, { autoBind: true });
@@ -11,4 +12,8 @@ export class DashboardStore {
     setActiveTab = (tab: Tab) => {
         this.activeTab = tab;
     };
+
+    setChatsSearchQuery(query: string) {
+        this.chatsSearchQuery = query;
+    }
 }
