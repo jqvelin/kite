@@ -7,9 +7,7 @@ import { ChatCard } from "./ChatCard";
 import { ChatsNotFound } from "./ChatsNotFound";
 
 export const ChatsList = observer(() => {
-    const {
-        chatsStore: { chats }
-    } = useRootStore();
+    const { chats } = useRootStore();
 
     return (
         <div className="w-full flex flex-col flex-1">

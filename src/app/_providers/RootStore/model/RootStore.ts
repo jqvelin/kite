@@ -35,6 +35,26 @@ export class RootStore {
         makeAutoObservable(this, {}, { autoBind: true });
     }
 
+    get chats() {
+        const chatsSearchQuery = this.dashboardStore.chatsSearchQuery;
+
+        if (!chatsSearchQuery) return this.chatsStore.chats;
+
+        return this.chatsStore.chats.filter((chat) => {
+            const membersNameIncludeQuery = chat.members.some((member) =>
+                member.name?.toLowerCase().includes(chatsSearchQuery)
+            );
+
+            const messagesIncludeQuery = chat.messages.some((message) =>
+                message.body
+                    .toLowerCase()
+                    .includes(this.dashboardStore.chatsSearchQuery)
+            );
+
+            return membersNameIncludeQuery || messagesIncludeQuery;
+        });
+    }
+
     async openChat(chatId: Chat["id"]) {
         const session = await getSession();
 
