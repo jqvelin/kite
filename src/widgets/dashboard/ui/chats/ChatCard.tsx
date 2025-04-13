@@ -20,7 +20,7 @@ export const ChatCard = ({ chat }: ChatCardProps) => {
         chat.members
     );
 
-    const lastChatMessage = chat.messages[chat.messages.length - 1];
+    const lastChatMessage = chat.messages[chat.messages.length - 1] ?? null;
 
     return (
         <Button
@@ -35,11 +35,11 @@ export const ChatCard = ({ chat }: ChatCardProps) => {
                     <p className="font-semibold text-lg md:text-xl whitespace-nowrap overflow-hidden max-w-32 overflow-ellipsis">
                         {chatName}
                     </p>
-                    <p className="text-sm max-w-64 text-start overflow-ellipsis overflow-hidden">
-                        {lastChatMessage.sentById === session?.user?.id && (
+                    <p className="text-sm max-w-64 text-start whitespace-nowrap overflow-ellipsis overflow-hidden">
+                        {lastChatMessage?.sentById === session?.user?.id && (
                             <span className="text-accent/50">Вы:&nbsp;</span>
                         )}
-                        {lastChatMessage.body}
+                        {lastChatMessage?.body}
                     </p>
                 </div>
             </div>
