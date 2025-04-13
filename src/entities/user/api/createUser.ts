@@ -6,6 +6,7 @@ import { signIn } from "@/shared/auth";
 import { type UserRegistrationForm } from "../model/userRegistrationForm.type";
 import { type UserRegistrationResponse } from "../model/userRegistrationResponse.type";
 import { USER_AUTH_ERRORS } from "../utils/constants";
+import { createChatWithLlama } from "../utils/createChatWithLlama";
 
 export const createUser = async (
     userData: UserRegistrationForm
@@ -50,6 +51,8 @@ export const createUser = async (
                 email
             }
         });
+
+        await createChatWithLlama(user);
 
         await signIn("resend", { email, redirect: false });
 

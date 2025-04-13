@@ -22,6 +22,19 @@ export class RootStore {
         () => ({
             queryKey: ["chats"],
             queryFn: getChats,
+            select(data) {
+                const chatsWithSortedMessages = data.map((chat) => ({
+                    ...chat,
+                    messages: chat.messages.sort((a, b) => {
+                        const dateA = new Date(a.sentAt);
+                        const dateB = new Date(b.sentAt);
+
+                        return dateA.getTime() - dateB.getTime();
+                    })
+                }));
+
+                return chatsWithSortedMessages;
+            },
             staleTime: 60 * 1000
         }),
         queryClient
