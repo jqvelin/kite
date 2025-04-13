@@ -27,17 +27,22 @@ export const ChatWindowHeader = () => {
         currentChat!.members
     );
 
+    const isChatWithLlama = !!currentChat?.members.find(
+        (member) => member.id === process.env.NEXT_PUBLIC_LLAMA_USER_ID
+    );
+
     const isChatterOnline =
-        currentChat?.type === "DIALOG" &&
-        !!currentChat.onlineMembers.find(
-            (member) => member.id !== session?.user?.id
-        );
+        isChatWithLlama ||
+        (currentChat?.type === "DIALOG" &&
+            !!currentChat.onlineMembers.find(
+                (member) => member.id !== session?.user?.id
+            ));
 
     const userStatusRef = useRef<HTMLDivElement>(null);
 
     return (
         <div className="flex items-center gap-md">
-            <ChatImage />
+            <ChatImage chat={currentChat!} />
             <div className="relative">
                 <div className="text-xl font-semibold">{chatRoomName}</div>
                 <Transition

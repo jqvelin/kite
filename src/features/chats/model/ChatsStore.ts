@@ -45,6 +45,8 @@ export class ChatsStore<
             this.defaultOptions
         ).data;
 
+        console.log(data);
+
         if (!data) {
             throw this.queryObserver.fetchOptimistic(this.defaultOptions);
         }
