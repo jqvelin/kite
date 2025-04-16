@@ -40,10 +40,8 @@ export const sendMessage = async (
         });
 
         return { message: createdMessage };
-    } catch {
-        console.log(
-            `Failed to send message of ${session?.user?.id} to ${chatId}`
-        );
+    } catch (e) {
+        console.log(e);
 
         return {
             error: {

@@ -45,8 +45,6 @@ export class ChatsStore<
             this.defaultOptions
         ).data;
 
-        console.log(data);
-
         if (!data) {
             throw this.queryObserver.fetchOptimistic(this.defaultOptions);
         }
@@ -57,7 +55,16 @@ export class ChatsStore<
     // Добавляем сообщение в кэш React Query.
     // Можно использовать как для полученных сообщений,
     // так и для отображения в интерфейсе отправленных.
-    receiveMessage(message: Message) {
+    async receiveMessage(message: Message) {
+        const chat = (this.chats as Chat[]).find(
+            (chat) => chat.id === message.chatId
+        );
+
+        if (!chat) {
+            await this.queryClient.invalidateQueries({ queryKey: ["chats"] });
+            return;
+        }
+
         this.queryClient.setQueryData<Chat[]>(
             this.defaultOptions.queryKey,
             (prevChatsData) => {
@@ -115,6 +122,13 @@ export class ChatsStore<
 
                 return newChatsData;
             }
+        );
+    }
+
+    addChat(chat: Chat) {
+        this.queryClient.setQueryData<Chat[]>(
+            this.defaultOptions.queryKey,
+            (prevChatsData) => [...(prevChatsData ?? []), chat]
         );
     }
 

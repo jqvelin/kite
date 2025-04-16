@@ -10,7 +10,7 @@ type ContactCardProps = {
 };
 
 export const ContactCard = ({ contact }: ContactCardProps) => {
-    const openChatWithContact = useChatWithContact(contact.id);
+    const openChatWithContact = useChatWithContact(contact);
 
     return (
         <Button

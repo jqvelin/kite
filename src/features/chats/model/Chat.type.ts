@@ -6,4 +6,4 @@ export type Chat = Prisma.ChatGetPayload<{
         messages: true;
         onlineMembers: true;
     };
-}>;
+}> & { isStarted?: boolean };

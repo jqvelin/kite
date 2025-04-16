@@ -6,6 +6,7 @@ import {
     type Message,
     type ServerToClientEvent,
     type UserChatStatus,
+    createChat,
     getChats,
     sendMessage
 } from "@/features/chats";
@@ -23,15 +24,30 @@ export class RootStore {
             queryKey: ["chats"],
             queryFn: getChats,
             select(data) {
-                const chatsWithSortedMessages = data.map((chat) => ({
-                    ...chat,
-                    messages: chat.messages.sort((a, b) => {
-                        const dateA = new Date(a.sentAt);
-                        const dateB = new Date(b.sentAt);
+                const chatsWithSortedMessages = data.map((chat) => {
+                    if ("isStarted" in chat) {
+                        return {
+                            ...chat,
+                            messages: chat.messages.sort((a, b) => {
+                                const dateA = new Date(a.sentAt);
+                                const dateB = new Date(b.sentAt);
 
-                        return dateA.getTime() - dateB.getTime();
-                    })
-                }));
+                                return dateA.getTime() - dateB.getTime();
+                            })
+                        };
+                    }
+
+                    return {
+                        ...chat,
+                        isStarted: true,
+                        messages: chat.messages.sort((a, b) => {
+                            const dateA = new Date(a.sentAt);
+                            const dateB = new Date(b.sentAt);
+
+                            return dateA.getTime() - dateB.getTime();
+                        })
+                    };
+                });
 
                 return chatsWithSortedMessages;
             },
@@ -68,7 +84,14 @@ export class RootStore {
         });
     }
 
-    async openChat(chatId: Chat["id"]) {
+    async openChat(chat: Chat | Chat["id"]) {
+        if (typeof chat === "object") {
+            this.chatsStore.addChat(chat);
+            this.setCurrentChatId(chat.id);
+
+            return;
+        }
+
         const session = await getSession();
 
         if (this.currentChatId) {
@@ -80,22 +103,48 @@ export class RootStore {
             );
         }
 
-        this.setCurrentChatId(chatId);
+        this.setCurrentChatId(chat);
 
         this.socket?.emit(
             "chatter-status-changed",
             session?.user?.id as string,
-            chatId,
+            chat,
             "online"
         );
     }
 
     async sendMessage(senderId: User["id"], messageBody: Message["body"]) {
-        if (!this.currentChatId) return;
+        if (!this.currentChat) return;
+
+        if (!this.currentChat.isStarted) {
+            const chat = await createChat({
+                memberIds: this.currentChat.members.map(({ id }) => id)
+            });
+
+            const clientSideMessageData: Message = {
+                body: messageBody,
+                chatId: chat.id,
+                id: crypto.randomUUID(),
+                sentAt: new Date(),
+                sentById: senderId
+            };
+
+            this.chatsStore.receiveMessage(clientSideMessageData);
+
+            const { message } = await sendMessage(chat.id, messageBody);
+
+            if (message) {
+                this.socket?.emit("send-message", message, true);
+            }
+
+            this.currentChat.isStarted = true;
+
+            return;
+        }
 
         const clientSideMessageData: Message = {
             body: messageBody,
-            chatId: this.currentChatId,
+            chatId: this.currentChat.id,
             id: crypto.randomUUID(),
             sentAt: new Date(),
             sentById: senderId
@@ -103,7 +152,7 @@ export class RootStore {
 
         this.chatsStore.receiveMessage(clientSideMessageData);
 
-        const { message } = await sendMessage(this.currentChatId, messageBody);
+        const { message } = await sendMessage(this.currentChat.id, messageBody);
 
         if (message) {
             this.socket?.emit("send-message", message);
