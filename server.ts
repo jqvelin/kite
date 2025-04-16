@@ -1,7 +1,9 @@
+import { type User } from "@/entities/user";
 import "dotenv/config";
 import next from "next";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
+import { type Socket } from "socket.io";
 
 import {
     type ClientToServerEvent,
@@ -22,10 +24,21 @@ app.prepare().then(() => {
 
     const io = new Server<ClientToServerEvent, ServerToClientEvent>(httpServer);
 
+    const userSockets = new Map<
+        User["id"],
+        Set<Socket<ClientToServerEvent, ServerToClientEvent>>
+    >();
+
     io.on("connection", async (socket) => {
         console.log(`${socket.id} is connected!`);
 
         const userId = socket.handshake.headers["x-user-id"] as string;
+
+        if (!userSockets.has(userId)) {
+            userSockets.set(userId, new Set());
+        }
+
+        userSockets.get(userId)?.add(socket);
 
         // Подключаем пользователя ко всем комнатам чатов, в которых он присутствует,
         // чтобы присылать новые сообщения в каждом из них.
@@ -97,8 +110,34 @@ app.prepare().then(() => {
             }
         );
 
-        socket.on("send-message", async (message) => {
+        socket.on("send-message", async (message, isFirst) => {
             console.log(`${socket.id} says "${message.body}"`);
+
+            const chat = await db.chat.findFirst({
+                where: {
+                    id: message.chatId
+                },
+                include: {
+                    messages: true,
+                    members: true
+                }
+            });
+
+            if (chat && isFirst) {
+                // Кто-то начал новую переписку.
+                chat.members.forEach((member) => {
+                    const memberSockets = userSockets.get(member.id);
+                    if (memberSockets) {
+                        memberSockets.forEach((socket) => {
+                            socket.join(message.chatId);
+                        });
+                    }
+                });
+
+                socket.to(message.chatId).emit("receive-message", message);
+
+                return;
+            }
 
             const isChatWithLlama = await db.chat.findFirst({
                 where: {

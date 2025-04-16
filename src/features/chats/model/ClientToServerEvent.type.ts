@@ -11,5 +11,5 @@ export type ClientToServerEvent = {
         chatId: Chat["id"],
         newStatus: UserChatStatus
     ) => void;
-    "send-message": (message: Message) => void;
+    "send-message": (message: Message, isFirst?: boolean) => void;
 };
