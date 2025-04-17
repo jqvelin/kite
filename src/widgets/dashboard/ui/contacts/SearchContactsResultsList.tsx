@@ -1,12 +1,13 @@
 "use client";
 
 import { type User, useGetUsersByNameQuery } from "@/entities/user";
-import { useSearchContactsQueryData } from "@/features/contacts";
-import { useSplitSearchContactsResults } from "@/features/contacts";
+import { useSearchThroughContactsResult } from "@/features/contacts";
+import { useSearchUsersGloballyResult } from "@/features/contacts";
 import { useDebouncedValue } from "@/shared/hooks";
 
 import { ContactCard } from "./ContactCard";
 import { ContactsListSkeleton } from "./ContactsListSkeleton";
+import { UserCard } from "./UserCard";
 import { UsersNotFound } from "./UsersNotFound";
 
 type SearchContactsResultsListProps = {
@@ -22,9 +23,9 @@ export const SearchContactsResultsList = ({
         debouncedSearchQueryName
     );
 
-    const contacts = useSearchContactsQueryData(searchQueryName);
+    const contacts = useSearchThroughContactsResult(searchQueryName);
 
-    const users = useSplitSearchContactsResults(
+    const users = useSearchUsersGloballyResult(
         contacts ?? [],
         unfilteredUsers ?? []
     );
@@ -50,9 +51,9 @@ export const SearchContactsResultsList = ({
                 <div>
                     <p className="font-medium mb-sm">Глобальный поиск</p>
                     {users?.map((user) => (
-                        <ContactCard
+                        <UserCard
+                            user={user}
                             key={user.id}
-                            contact={user}
                         />
                     ))}
                 </div>

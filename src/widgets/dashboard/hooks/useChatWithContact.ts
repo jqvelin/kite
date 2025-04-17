@@ -1,20 +1,16 @@
 import { useRootStore } from "@/app/_providers";
 import type { User, UserSearchResult } from "@/entities/user";
 import { type Chat } from "@/features/chats";
-import { useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useCallback } from "react";
 
 export const useChatWithContact = (contact: UserSearchResult) => {
     const { data: session } = useSession();
-    const { openChat, chatsStore } = useRootStore();
-    const queryClient = useQueryClient();
+    const { openChat, chats } = useRootStore();
 
     const openChatWithContact = useCallback(async () => {
-        const existingChat = chatsStore.chats?.find((chat) => {
-            return chat.members.some((member) => {
-                return member.id === contact.id;
-            });
+        const existingChat = chats.find((chat) => {
+            return chat.members.some((member) => member.id === contact.id);
         });
 
         if (existingChat) {
@@ -32,13 +28,7 @@ export const useChatWithContact = (contact: UserSearchResult) => {
         };
 
         openChat(chat);
-
-        // const chat = await createChat({
-        //     memberIds: [session?.user?.id as string, contactId]
-        // });
-
-        // await queryClient.invalidateQueries({ queryKey: ["chats"] });
-    }, [chatsStore.chats, openChat, queryClient, session?.user?.id]);
+    }, [contact, chats, openChat, session?.user]);
 
     return openChatWithContact;
 };

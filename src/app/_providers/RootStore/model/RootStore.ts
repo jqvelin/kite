@@ -139,6 +139,8 @@ export class RootStore {
 
             this.currentChat.isStarted = true;
 
+            this.setCurrentChatId(chat.id);
+
             return;
         }
 
