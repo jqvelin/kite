@@ -2,7 +2,7 @@ import { UserSearchResult } from "@/entities/user";
 import { useSession } from "next-auth/react";
 import { useMemo } from "react";
 
-export const useSplitSearchContactsResults = (
+export const useSearchUsersGloballyResult = (
     contacts: UserSearchResult[],
     unfilteredUsers: UserSearchResult[]
 ) => {
