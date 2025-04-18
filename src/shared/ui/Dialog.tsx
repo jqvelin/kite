@@ -202,11 +202,11 @@ const DialogOverlay = ({
 type DialogTriggerProps = PropsWithChildren<ComponentPropsWithRef<"button">>;
 
 const DialogTrigger = (props: DialogTriggerProps) => {
-    const { setIsOpen } = useDialog();
+    const { isOpen, setIsOpen } = useDialog();
 
     return (
         <button
-            onClick={() => setIsOpen(true)}
+            onClick={() => setIsOpen(!isOpen)}
             {...props}
         >
             {props.children}

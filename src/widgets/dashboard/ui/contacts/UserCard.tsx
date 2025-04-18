@@ -4,12 +4,12 @@ import { useRootStore } from "@/app/_providers";
 import { UserAvatar, type UserSearchResult } from "@/entities/user";
 import { type User } from "@/entities/user";
 import { type Chat } from "@/features/chats";
-import { addUserToContacts, useGetContactsQuery } from "@/features/contacts";
+import { addUserToContacts } from "@/features/contacts";
 import { Button } from "@/shared/ui";
 import { useQueryClient } from "@tanstack/react-query";
 import { observer } from "mobx-react-lite";
 import { useSession } from "next-auth/react";
-import { BiCheck, BiPlus } from "react-icons/bi";
+import { BiPlus } from "react-icons/bi";
 
 type UserCardProps = {
     user: UserSearchResult;
@@ -19,9 +19,6 @@ export const UserCard = observer(({ user }: UserCardProps) => {
     const { openChat } = useRootStore();
     const { data: session } = useSession();
     const queryClient = useQueryClient();
-    const { data: contacts } = useGetContactsQuery(session?.user?.id as string);
-
-    const isInContacts = contacts?.some((contact) => contact.id === user.id);
 
     const chat: Chat = {
         id: crypto.randomUUID(),
@@ -51,19 +48,13 @@ export const UserCard = observer(({ user }: UserCardProps) => {
                     </p>
                 </div>
             </Button>
-            {!isInContacts ? (
-                <Button
-                    onClick={addToContacts}
-                    variant="ghost"
-                    className="hover:bg-transparent w-8"
-                >
-                    <BiPlus size="1.5rem" />
-                </Button>
-            ) : (
-                <div className="self-center w-8">
-                    <BiCheck size="1.5rem" />
-                </div>
-            )}
+            <Button
+                onClick={addToContacts}
+                variant="ghost"
+                className="hover:bg-transparent w-8"
+            >
+                <BiPlus size="1.5rem" />
+            </Button>
         </div>
     );
 });
