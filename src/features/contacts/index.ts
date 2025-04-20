@@ -2,3 +2,4 @@ export { useSearchThroughContactsResult } from "./hooks/useSearchThroughContacts
 export { useSearchUsersGloballyResult } from "./hooks/useSearchUsersGloballyResult";
 export { useGetContactsQuery } from "./api/useGetContactsQuery";
 export { addUserToContacts } from "./api/addUserToContacts";
+export { removeUserFromContacts } from "./api/removeUserFromContacts";
