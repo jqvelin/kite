@@ -3,10 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "scripts": {
-        "dev": "next dev --turbopack",
+        "dev": "nodemon",
         "format": "prettier . --write",
-        "build": "next build",
-        "start": "next start",
+        "build": "next build && tsc --project tsconfig.server.json",
+        "start": "cross-env NODE_ENV=production node dist/server.js",
         "lint": "next lint",
         "prepare": "husky"
     },
@@ -20,24 +20,51 @@
         ]
     },
     "dependencies": {
-        "husky": "^9.1.7",
+        "@auth/prisma-adapter": "^2.7.4",
+        "@hookform/resolvers": "^3.10.0",
+        "@prisma/client": "^6.3.1",
+        "@tanstack/react-query": "^5.67.3",
+        "bcryptjs": "^2.4.3",
+        "dotenv": "^16.4.7",
+        "focus-trap-react": "^11.0.3",
+        "ky": "^1.7.5",
+        "mobx": "^6.13.6",
+        "mobx-react-lite": "^4.1.0",
         "next": "15.1.6",
+        "next-auth": "^5.0.0-beta.25",
         "react": "^19.0.0",
-        "react-dom": "^19.0.0"
+        "react-dom": "^19.0.0",
+        "react-hook-form": "^7.54.2",
+        "react-icons": "^5.4.0",
+        "react-transition-group": "^4.4.5",
+        "socket.io": "^4.8.1",
+        "socket.io-client": "^4.8.1",
+        "tailwind-merge": "^3.0.2",
+        "ts-node": "^10.9.2",
+        "zod": "^3.24.1"
     },
     "devDependencies": {
         "@eslint/eslintrc": "^3",
+        "@tailwindcss/postcss": "^4.0.7",
         "@trivago/prettier-plugin-sort-imports": "^5.2.1",
+        "@types/bcryptjs": "^2.4.6",
         "@types/node": "^20",
         "@types/react": "^19",
         "@types/react-dom": "^19",
+        "@types/react-transition-group": "^4.4.12",
+        "cross-env": "^7.0.3",
         "eslint": "^9",
         "eslint-config-next": "15.1.6",
         "lint-staged": "^15.4.3",
+        "nodemon": "^3.1.9",
         "postcss": "^8",
         "prettier": "^3.4.2",
         "prettier-plugin-tailwindcss": "^0.6.11",
-        "tailwindcss": "^3.4.1",
+        "prisma": "^6.3.1",
+        "tailwindcss": "^4.0.7",
         "typescript": "^5"
+    },
+    "prisma": {
+        "schema": "src/shared/api/prisma/schema.prisma"
     }
 }
