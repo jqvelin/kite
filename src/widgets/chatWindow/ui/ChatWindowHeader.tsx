@@ -2,8 +2,10 @@
 
 import { useRootStore } from "@/app/_providers";
 import { ChatImage, getChatRoomNameByMembers } from "@/features/chats";
+import { Button } from "@/shared/ui";
 import { useSession } from "next-auth/react";
 import { useRef } from "react";
+import { BiArrowBack } from "react-icons/bi";
 import { Transition, type TransitionStatus } from "react-transition-group";
 import { twMerge } from "tailwind-merge";
 
@@ -20,7 +22,7 @@ const CHATTER_STATUS_TRANSITION_STATE_CLASSNAMES: {
 export const ChatWindowHeader = () => {
     const { data: session } = useSession();
 
-    const { currentChat } = useRootStore();
+    const { currentChat, setCurrentChatId } = useRootStore();
 
     const chatRoomName = getChatRoomNameByMembers(
         session?.user?.id as string,
@@ -40,8 +42,19 @@ export const ChatWindowHeader = () => {
 
     const userStatusRef = useRef<HTMLDivElement>(null);
 
+    const goBack = () => {
+        setCurrentChatId(null);
+    };
+
     return (
         <div className="flex items-center gap-md">
+            <Button
+                onClick={goBack}
+                variant="ghost"
+                className="p-md rounded-full"
+            >
+                <BiArrowBack size="1.125rem" />
+            </Button>
             <ChatImage chat={currentChat!} />
             <div className="relative">
                 <div className="text-xl font-semibold">{chatRoomName}</div>

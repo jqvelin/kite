@@ -14,7 +14,7 @@ export const ChatWindow = observer(() => {
     if (!currentChat) return <ChatUnselectedMessage />;
 
     return (
-        <div className="flex-1 bg-background h-full rounded-lg shadow-lg gap-md md:flex flex-col hidden p-md">
+        <div className="flex-1 bg-background h-full rounded-lg shadow-lg gap-md flex flex-col p-md">
             <ChatWindowHeader />
             <ChatWindowMessages className="h-full" />
             <ChatWindowMessageForm />
