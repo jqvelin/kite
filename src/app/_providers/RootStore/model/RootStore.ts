@@ -169,7 +169,7 @@ export class RootStore {
         );
     }
 
-    setCurrentChatId(chatId: Chat["id"]) {
+    setCurrentChatId(chatId: Chat["id"] | null) {
         this.currentChatId = chatId;
     }
 
