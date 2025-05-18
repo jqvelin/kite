@@ -16,7 +16,9 @@ import { createPortal } from "react-dom";
 import { CgClose } from "react-icons/cg";
 import { Transition, TransitionStatus } from "react-transition-group";
 
-import { useEscape } from "../hooks";
+import { useEvent } from "../hooks";
+
+const KEYDOWN_EVENT_CONSTRAINTS = { key: "Escape" };
 
 type DialogContextType = {
     isOpen: boolean;
@@ -46,7 +48,7 @@ const Dialog = ({ children }: { children: ReactNode }) => {
 
     const closeDialog = useCallback(() => setIsOpen(false), []);
 
-    useEscape(closeDialog);
+    useEvent<KeyboardEvent>("keydown", closeDialog, KEYDOWN_EVENT_CONSTRAINTS);
 
     return (
         <DialogContext.Provider value={{ isOpen, setIsOpen }}>

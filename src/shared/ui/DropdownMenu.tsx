@@ -17,7 +17,7 @@ import React, {
 } from "react";
 import { Transition, TransitionStatus } from "react-transition-group";
 
-import { useEscape } from "../hooks";
+import { useEvent } from "../hooks";
 
 type DropdownMenuContextType = {
     isOpen: boolean;
@@ -25,6 +25,8 @@ type DropdownMenuContextType = {
 };
 
 const DropdownMenuContext = createContext<DropdownMenuContextType | null>(null);
+
+const KEYDOWN_EVENT_CONSTRAINTS = { key: "Escape" };
 
 const useDropdownMenu = () => {
     const dropdownMenuContext = useContext(DropdownMenuContext);
@@ -47,7 +49,11 @@ const DropdownMenu = ({ children }: { children: ReactNode }) => {
 
     const closeDropdownMenu = useCallback(() => setIsOpen(false), []);
 
-    useEscape(closeDropdownMenu);
+    useEvent<KeyboardEvent>(
+        "keydown",
+        closeDropdownMenu,
+        KEYDOWN_EVENT_CONSTRAINTS
+    );
 
     return (
         <DropdownMenuContext.Provider value={{ isOpen, setIsOpen }}>
